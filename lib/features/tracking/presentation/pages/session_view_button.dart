@@ -7,6 +7,7 @@ import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/skill_button.dart';
 
+//TODO: UI test
 class SessionViewButton extends StatefulWidget {
   const SessionViewButton({super.key});
 
@@ -33,6 +34,7 @@ class _SessionViewButtonState extends State<SessionViewButton> {
     });
   }
 
+  // TODO: Replace with databases
   Future<void> _loadSkillsForToday() async {
     String date = getCurrentDate();
     List<SkillEntity> loadedSkills = await loadSkills(date, pref);

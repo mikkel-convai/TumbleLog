@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 
+// TODO: UI test
+// TODO: Figure out if i should use bloc instead of child object passed down
 class SkillButton extends StatefulWidget {
   final SkillEntity skill;
 

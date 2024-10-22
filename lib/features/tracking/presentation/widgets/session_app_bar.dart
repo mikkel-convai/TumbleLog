@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tumblelog/controllers/skill_controller.dart';
-import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 
 class SessionAppBar extends StatefulWidget implements PreferredSizeWidget {
   final SharedPreferences pref;
-  final List<Skill> skills;
+  final List<SkillEntity> skills;
 
   const SessionAppBar({
     super.key,
