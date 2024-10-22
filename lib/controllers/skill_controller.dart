@@ -30,7 +30,10 @@ Future<List<Skill>> loadSkills(String date, SharedPreferences prefs) async {
   List<dynamic> skillsMap = jsonDecode(skillsJson);
   print('Skills loaded in controller');
   return skillsMap
-      .map((skillData) =>
-          Skill(name: skillData['name'], reps: skillData['reps']))
+      .map((skillData) => Skill(
+            name: skillData['name'],
+            reps: skillData['reps'],
+            symbol: skillData['symbol'],
+          ))
       .toList();
 }
