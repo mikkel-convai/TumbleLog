@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tumblelog/controllers/skill_controller.dart';
-import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/models/skill_model.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
+import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 
 class SessionAppBar extends StatefulWidget implements PreferredSizeWidget {
   final SharedPreferences pref;

@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:tumblelog/models/skill_model.dart';
+import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Function to save skills based on a date
 Future<void> saveSkills(
-    String date, SharedPreferences prefs, List<Skill> skills) async {
+    String date, SharedPreferences prefs, List<SkillEntity> skills) async {
   // Convert skills list to JSON
   List<Map<String, dynamic>> skillsMap =
       skills.map((skill) => {'name': skill.name, 'reps': skill.reps}).toList();
@@ -17,7 +17,8 @@ Future<void> saveSkills(
 }
 
 // Function to load skills based on a date
-Future<List<Skill>> loadSkills(String date, SharedPreferences prefs) async {
+Future<List<SkillEntity>> loadSkills(
+    String date, SharedPreferences prefs) async {
   // Get the JSON string saved under the given date
   String? skillsJson = prefs.getString(date);
 
@@ -30,7 +31,7 @@ Future<List<Skill>> loadSkills(String date, SharedPreferences prefs) async {
   List<dynamic> skillsMap = jsonDecode(skillsJson);
   print('Skills loaded in controller');
   return skillsMap
-      .map((skillData) => Skill(
+      .map((skillData) => SkillEntity(
             name: skillData['name'],
             reps: skillData['reps'],
             symbol: skillData['symbol'],

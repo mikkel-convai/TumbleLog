@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/models/skill_model.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
+import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 
 class SkillButton extends StatefulWidget {
-  final Skill skill;
+  final SkillEntity skill;
 
   const SkillButton({super.key, required this.skill});
 

@@ -1,4 +1,4 @@
-class Skill {
+class SkillEntity {
   final String name;
   final DateTime date;
   final String symbol;
@@ -6,7 +6,7 @@ class Skill {
   final String equipment;
   int reps;
 
-  Skill({
+  SkillEntity({
     required this.name,
     required this.symbol,
     this.difficulty = 0.0,

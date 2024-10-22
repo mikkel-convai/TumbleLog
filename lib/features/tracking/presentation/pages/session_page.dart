@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/views/session_view_bar.dart';
-import 'package:tumblelog/views/session_view_button.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
+import 'package:tumblelog/features/tracking/presentation/pages/session_view_bar.dart';
+import 'package:tumblelog/features/tracking/presentation/pages/session_view_button.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class SessionPage extends StatefulWidget {
+  const SessionPage({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<SessionPage> createState() => _SessionPageState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _SessionPageState extends State<SessionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
