@@ -1,17 +1,38 @@
 import 'package:tumblelog/models/skill_model.dart';
 
 List<Skill> defaultSkills = [
+  Skill(name: 'Whipback', symbol: '^', difficulty: 0.2),
+  Skill(name: 'Double back somersault tuck', symbol: '--o', difficulty: 2.0),
+  Skill(name: 'Double back somersault pike', symbol: '--<', difficulty: 2.2),
+  Skill(name: 'Double back somersault open', symbol: '--O', difficulty: 2.2),
+  Skill(
+      name: 'Double back somersault straight', symbol: '--/', difficulty: 2.4),
+  Skill(name: 'Full tuck', symbol: '2.', difficulty: 0.9),
+  Skill(name: 'Full-in tuck', symbol: '2-o', difficulty: 2.4),
+  Skill(name: 'Full-in pike', symbol: '2-<', difficulty: 2.6),
+  Skill(name: 'Full-in straight', symbol: '2-/', difficulty: 2.8),
+  Skill(name: 'Full Full tuck', symbol: '2 2 o', difficulty: 3.2),
+  Skill(name: 'Full Full straight', symbol: '2 2 /', difficulty: 3.6),
+  Skill(name: 'DB tuck whip', symbol: '--o ^', difficulty: 2.2),
+  Skill(name: 'DB pike whip', symbol: '--< ^', difficulty: 2.4),
+  Skill(name: 'DB straight whip', symbol: '--/ ^', difficulty: 2.6),
+  Skill(name: 'Full in straight whip', symbol: '2-/ ^', difficulty: 3.0),
+  Skill(name: '5 skills', symbol: '5 skills', difficulty: 5),
+  Skill(name: '8 skills', symbol: '8 skills', difficulty: 8),
+];
+
+List<Skill> allSkills = [
   Skill(name: 'Round-off', symbol: '(', difficulty: 0.1),
-  Skill(name: 'Front Handspring', symbol: 'H', difficulty: 0.1),
   Skill(name: 'Flic-Flac', symbol: 'F', difficulty: 0.1),
-  Skill(name: 'Whipback (tempo salto)', symbol: '^', difficulty: 0.2),
+  Skill(name: 'Front Handspring', symbol: 'H', difficulty: 0.1),
+  Skill(name: 'Side somersault tuck', symbol: '-ox', difficulty: 0.5),
+  Skill(name: 'Side somersault pike', symbol: '-<x', difficulty: 0.6),
+  Skill(name: 'Whipback', symbol: '^', difficulty: 0.2),
   Skill(name: 'Back somersault tuck', symbol: '-o', difficulty: 0.5),
   Skill(name: 'Back somersault pike', symbol: '-<', difficulty: 0.6),
   Skill(name: 'Back somersault straight', symbol: '-/', difficulty: 0.6),
   Skill(name: 'Front somersault tuck', symbol: '.-o', difficulty: 0.6),
   Skill(name: 'Front somersault pike', symbol: '.-<', difficulty: 0.7),
-  Skill(name: 'Side somersault tuck', symbol: '-ox', difficulty: 0.5),
-  Skill(name: 'Side somersault pike', symbol: '-<x', difficulty: 0.6),
   Skill(name: 'Back somersault ½ twist', symbol: '1.-/', difficulty: 0.7),
   Skill(name: 'Barani', symbol: '.1', difficulty: 0.8),
   Skill(name: 'Back somersault 1/1 twist', symbol: '2.', difficulty: 0.9),
