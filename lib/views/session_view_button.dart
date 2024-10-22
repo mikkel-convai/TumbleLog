@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/controllers/skill_controller.dart';
 import 'package:tumblelog/models/skill_model.dart';
+import 'package:tumblelog/widgets/session_app_bar.dart';
 import 'package:tumblelog/widgets/skill_button.dart';
 
 class SessionViewButton extends StatefulWidget {
@@ -14,8 +15,9 @@ class SessionViewButton extends StatefulWidget {
 }
 
 class _SessionViewButtonState extends State<SessionViewButton> {
-  late final SharedPreferences pref;
+  late SharedPreferences pref;
   List<Skill> skills = defaultSkills;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -26,6 +28,9 @@ class _SessionViewButtonState extends State<SessionViewButton> {
   Future<void> _initPref() async {
     pref = await SharedPreferences.getInstance();
     _loadSkillsForToday();
+    setState(() {
+      isLoading = false; // Set loading to false after initialization
+    });
   }
 
   Future<void> _loadSkillsForToday() async {
@@ -44,11 +49,6 @@ class _SessionViewButtonState extends State<SessionViewButton> {
     }
   }
 
-  Future<void> _saveSkillsForToday() async {
-    String date = getCurrentDate();
-    await saveSkills(date, pref, skills);
-  }
-
   String getCurrentDate() {
     final now = DateTime.now();
     return DateFormat('MMMM d, yyyy').format(now);
@@ -56,15 +56,15 @@ class _SessionViewButtonState extends State<SessionViewButton> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(
+          child: CircularProgressIndicator()); // Show loading indicator
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(getCurrentDate()),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveSkillsForToday,
-          ),
-        ],
+      appBar: SessionAppBar(
+        pref: pref,
+        skills: skills,
       ),
       body: GridView.builder(
         gridDelegate:

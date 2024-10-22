@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/views/session_view_bar.dart';
 import 'package:tumblelog/views/session_view_button.dart';
-import 'package:tumblelog/widgets/bottom_bar.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -11,27 +12,19 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int currentPageIndex = 1;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AppBottomBar(
-        currentPageIndex: currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-      ),
       body: SafeArea(
-        child: <Widget>[
-          /// Session view with buttons
-          const SessionViewButton(),
-
-          // Session view with bars
-          const SessionViewBar(),
-        ][currentPageIndex],
+        child: BlocBuilder<LayoutCubit, LayoutState>(
+          builder: (context, state) {
+            if (state.layout == LayoutType.grid) {
+              return const SessionViewButton(); // Show buttons layout
+            } else {
+              return const SessionViewBar(); // Show bars layout
+            }
+          },
+        ),
       ),
     );
   }

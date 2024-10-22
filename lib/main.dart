@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/views/home_view.dart';
 
 void main() {
@@ -11,10 +13,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TubmleLog',
-      home: HomeView(),
+      home: BlocProvider(
+        create: (_) => LayoutCubit(),
+        child: const HomeView(),
+      ),
     );
   }
 }
