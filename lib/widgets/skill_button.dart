@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/features/tracking/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/models/skill_model.dart';
 
 class SkillButton extends StatefulWidget {
@@ -37,28 +39,42 @@ class _SkillButtonState extends State<SkillButton> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all<Color?>(Colors.grey[200]),
-        ),
-        onLongPress: () => resetReps(),
-        onPressed: () => _incrementCounter(),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.skill.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.black),
+      child: BlocBuilder<LayoutCubit, LayoutState>(
+        builder: (context, state) {
+          String displayText;
+          if (state.textDisplay == TextType.symbol) {
+            displayText = widget.skill.symbol;
+          } else if (state.textDisplay == TextType.name) {
+            displayText = widget.skill.name;
+          } else {
+            displayText = widget.skill.difficulty.toString();
+          }
+
+          return ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  WidgetStateProperty.all<Color?>(Colors.grey[200]),
+            ),
+            onLongPress: () => resetReps(),
+            onPressed: () => _incrementCounter(),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    displayText, // Dynamic text based on the cubit's state
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                  Text(
+                    widget.skill.reps.toString(),
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ],
               ),
-              Text(
-                widget.skill.reps.toString(),
-                style: const TextStyle(color: Colors.black),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
