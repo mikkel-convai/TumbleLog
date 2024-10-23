@@ -1,9 +1,5 @@
 part of 'layout_cubit.dart';
 
-enum LayoutType { grid, list }
-
-enum TextType { symbol, name, dd }
-
 @immutable
 abstract class LayoutState {
   final LayoutType layout;

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/controllers/skill_controller.dart';
 import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/presentation/widgets/equipment_dropdown.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/skill_bar.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,7 @@ class _SessionViewBarState extends State<SessionViewBar> {
   late SharedPreferences pref;
   List<SkillEntity> skills = defaultSkills;
   bool isLoading = true;
+  EquipmentType selectedEquipment = EquipmentType.rodFloor;
 
   @override
   void initState() {
@@ -54,6 +56,12 @@ class _SessionViewBarState extends State<SessionViewBar> {
     return DateFormat('MMMM d, yyyy').format(now);
   }
 
+  void _onEquipmentChanged(EquipmentType newEquipment) {
+    setState(() {
+      selectedEquipment = newEquipment;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -63,16 +71,26 @@ class _SessionViewBarState extends State<SessionViewBar> {
 
     return Scaffold(
         appBar: SessionAppBar(pref: pref, skills: skills),
-        body: ListView.builder(
-          padding: const EdgeInsets.all(20.0),
-          itemCount: skills.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: SkillBar(skill: skills[index]),
-            );
-          },
+        body: Column(
+          children: [
+            EquipmentDropdown(
+              initialEquipment: selectedEquipment,
+              onEquipmentChanged: _onEquipmentChanged,
+            ),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(20.0),
+                itemCount: skills.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: SkillBar(skill: skills[index]),
+                  );
+                },
+              ),
+            ),
+          ],
         ));
   }
 }

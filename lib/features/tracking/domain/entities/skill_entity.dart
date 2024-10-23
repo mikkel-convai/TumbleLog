@@ -1,3 +1,24 @@
+// import 'package:equatable/equatable.dart';
+
+// class SkillEntity extends Equatable {
+//   final String id;
+//   final String name;
+//   final String symbol;
+//   final String equipment;
+//   final int reps;
+
+//   const SkillEntity({
+//     required this.id,
+//     required this.name,
+//     required this.symbol,
+//     required this.equipment,
+//     required this.reps,
+//   });
+
+//   @override
+//   List<Object> get props => [id, name, symbol, equipment, reps];
+// }
+
 class SkillEntity {
   final String name;
   final DateTime date;
