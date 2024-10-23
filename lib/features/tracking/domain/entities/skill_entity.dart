@@ -1,22 +1,19 @@
-// import 'package:equatable/equatable.dart';
+// import 'package:tumblelog/features/tracking/domain/entities/equipment_rep_entity.dart';
 
-// class SkillEntity extends Equatable {
+// class SkillEntity {
 //   final String id;
 //   final String name;
 //   final String symbol;
-//   final String equipment;
-//   final int reps;
+//   final double difficulty;
+//   List<EquipmentRepEntity> equipmentReps;
 
-//   const SkillEntity({
+//   SkillEntity({
 //     required this.id,
 //     required this.name,
 //     required this.symbol,
-//     required this.equipment,
-//     required this.reps,
-//   });
-
-//   @override
-//   List<Object> get props => [id, name, symbol, equipment, reps];
+//     required this.difficulty,
+//     List<EquipmentRepEntity>? equipmentReps,
+//   }) : equipmentReps = equipmentReps ?? [];
 // }
 
 class SkillEntity {

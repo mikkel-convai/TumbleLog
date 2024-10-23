@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class SessionEntity extends Equatable {
+class SessionEntity {
   final String id;
   final String athleteName;
   final DateTime date;
@@ -10,7 +8,4 @@ class SessionEntity extends Equatable {
     required this.athleteName,
     required this.date,
   });
-
-  @override
-  List<Object> get props => [id, athleteName, date];
 }

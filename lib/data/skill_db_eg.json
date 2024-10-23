@@ -1,0 +1,46 @@
+[
+  {
+    "id": "skill_01",
+    "name": "Double back somersault straight",
+    "symbol": "--/",
+    "difficulty": 2.4,
+    "equipmentReps": [
+      {
+        "equipment": "air floor",
+        "reps": 10
+      },
+      {
+        "equipment": "rod floor",
+        "reps": 10
+      }
+    ]
+  },
+  {
+    "id": "skill_02",
+    "name": "Full-in back-out tuck",
+    "symbol": "2-o",
+    "difficulty": 2.4,
+    "equipmentReps": [
+      {
+        "equipment": "rod floor",
+        "reps": 8
+      }
+    ]
+  },
+  {
+    "id": "skill_03",
+    "name": "Whipback",
+    "symbol": "^",
+    "difficulty": 0.2,
+    "equipmentReps": [
+      {
+        "equipment": "trampoline",
+        "reps": 15
+      },
+      {
+        "equipment": "rod floor",
+        "reps": 5
+      }
+    ]
+  }
+]
