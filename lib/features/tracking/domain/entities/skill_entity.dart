@@ -18,11 +18,11 @@ class SkillEntity extends Equatable {
   })  : id = id ?? const Uuid().v4(),
         equipmentReps = equipmentReps ??
             {
-              EquipmentType.rodFloor: 1,
-              EquipmentType.airRodFloor: 2,
-              EquipmentType.airFloor: 3,
-              EquipmentType.dmt: 4,
-              EquipmentType.trampoline: 5,
+              EquipmentType.rodFloor: 0,
+              EquipmentType.airRodFloor: 0,
+              EquipmentType.airFloor: 0,
+              EquipmentType.dmt: 0,
+              EquipmentType.trampoline: 0,
             };
 
   // Get reps for a specific equipment

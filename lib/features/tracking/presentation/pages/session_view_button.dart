@@ -5,14 +5,9 @@ import 'package:tumblelog/features/tracking/presentation/widgets/equipment_dropd
 import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/skill_button.dart';
 
-class SessionViewButton extends StatefulWidget {
+class SessionViewButton extends StatelessWidget {
   const SessionViewButton({super.key});
 
-  @override
-  State<SessionViewButton> createState() => _SessionViewButtonState();
-}
-
-class _SessionViewButtonState extends State<SessionViewButton> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
