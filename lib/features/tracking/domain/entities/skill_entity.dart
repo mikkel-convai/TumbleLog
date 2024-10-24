@@ -1,35 +1,75 @@
-// import 'package:tumblelog/features/tracking/domain/entities/equipment_rep_entity.dart';
+import 'package:equatable/equatable.dart';
+import 'package:tumblelog/constants.dart';
+import 'package:uuid/uuid.dart';
 
-// class SkillEntity {
-//   final String id;
-//   final String name;
-//   final String symbol;
-//   final double difficulty;
-//   List<EquipmentRepEntity> equipmentReps;
-
-//   SkillEntity({
-//     required this.id,
-//     required this.name,
-//     required this.symbol,
-//     required this.difficulty,
-//     List<EquipmentRepEntity>? equipmentReps,
-//   }) : equipmentReps = equipmentReps ?? [];
-// }
-
-class SkillEntity {
+class SkillEntity extends Equatable {
+  final String id;
   final String name;
-  final DateTime date;
   final String symbol;
   final double difficulty;
-  final String equipment;
-  int reps;
+  final Map<EquipmentType, int> equipmentReps;
 
   SkillEntity({
+    String? id,
     required this.name,
     required this.symbol,
-    this.difficulty = 0.0,
-    DateTime? date,
-    this.equipment = 'rod floor',
-    this.reps = 0,
-  }) : date = date ?? DateTime.now();
+    required this.difficulty,
+    Map<EquipmentType, int>? equipmentReps,
+  })  : id = id ?? const Uuid().v4(),
+        equipmentReps = equipmentReps ??
+            {
+              EquipmentType.rodFloor: 1,
+              EquipmentType.airRodFloor: 2,
+              EquipmentType.airFloor: 3,
+              EquipmentType.dmt: 4,
+              EquipmentType.trampoline: 5,
+            };
+
+  // Get reps for a specific equipment
+  int getRepsForEquipment(EquipmentType equipment) {
+    return equipmentReps[equipment] ?? 0;
+  }
+
+  // Create a new instance of SkillEntity with incremented reps for a specific equipment
+  SkillEntity incrementRepsForEquipment(EquipmentType equipment) {
+    final updatedReps = Map<EquipmentType, int>.from(equipmentReps)
+      ..update(equipment, (reps) => reps + 1, ifAbsent: () => 1);
+    return SkillEntity(
+      id: id,
+      name: name,
+      symbol: symbol,
+      difficulty: difficulty,
+      equipmentReps: updatedReps,
+    );
+  }
+
+  // Create a new instance of SkillEntity with decremented reps for a specific equipment
+  SkillEntity decrementRepsForEquipment(EquipmentType equipment) {
+    final updatedReps = Map<EquipmentType, int>.from(equipmentReps)
+      ..update(equipment, (reps) => reps > 0 ? reps - 1 : 0);
+    return SkillEntity(
+      id: id,
+      name: name,
+      symbol: symbol,
+      difficulty: difficulty,
+      equipmentReps: updatedReps,
+    );
+  }
+
+  // Create a new instance of SkillEntity with updated reps for a specific equipment
+  SkillEntity updateRepsForEquipment(EquipmentType equipment, int newReps) {
+    final updatedReps = Map<EquipmentType, int>.from(equipmentReps)
+      ..[equipment] = newReps;
+    return SkillEntity(
+      id: id,
+      name: name,
+      symbol: symbol,
+      difficulty: difficulty,
+      equipmentReps: updatedReps,
+    );
+  }
+
+  // Overrides for Equatable to compare fields for equality
+  @override
+  List<Object?> get props => [id, name, symbol, difficulty, equipmentReps];
 }

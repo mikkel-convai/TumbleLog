@@ -1,9 +1,12 @@
-class EquipmentRepEntity {
-  final String equipment;
-  final int reps;
+// import 'package:tumblelog/constants.dart';
 
-  const EquipmentRepEntity({
-    required this.equipment,
-    required this.reps,
-  });
-}
+// class EquipmentRepEntity {
+//   final EquipmentType equipment;
+//   int reps;
+
+//   // Initialize reps to 0
+//   EquipmentRepEntity({
+//     required this.equipment,
+//     this.reps = 0,
+//   });
+// }

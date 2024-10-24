@@ -22,7 +22,7 @@ class _SessionPageState extends State<SessionPage> {
             if (state.layout == LayoutType.grid) {
               return const SessionViewButton(); // Show buttons layout
             } else {
-              return const SessionViewBar(); // Show bars layout
+              return Placeholder(); //const SessionViewBar(); // Show bars layout
             }
           },
         ),

@@ -1,34 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tumblelog/constants.dart';
-import 'package:tumblelog/controllers/skill_controller.dart';
-import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 
-class SessionAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final SharedPreferences pref;
-  final List<SkillEntity> skills;
-
+class SessionAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SessionAppBar({
     super.key,
-    required this.pref,
-    required this.skills,
   });
-
-  @override
-  State<SessionAppBar> createState() => _SessionAppBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class _SessionAppBarState extends State<SessionAppBar> {
-  Future<void> _saveSkillsForToday() async {
-    String date = getCurrentDate();
-    await saveSkills(date, widget.pref, widget.skills);
-  }
 
   String getCurrentDate() {
     final now = DateTime.now();
@@ -63,15 +42,12 @@ class _SessionAppBarState extends State<SessionAppBar> {
               onPressed: () => context.read<LayoutCubit>().toggleTextDisplay(),
               tooltip: "Toggle Text Size",
             ),
-
-            // Save button
-            IconButton(
-              icon: const Icon(Icons.save),
-              onPressed: _saveSkillsForToday,
-            ),
           ],
         );
       },
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

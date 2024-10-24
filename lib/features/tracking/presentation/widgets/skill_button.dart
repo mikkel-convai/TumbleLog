@@ -2,40 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 
-// TODO: UI test
 // TODO: Figure out if i should use bloc instead of child object passed down
-class SkillButton extends StatefulWidget {
-  final SkillEntity skill;
 
-  const SkillButton({super.key, required this.skill});
+class SkillButton extends StatefulWidget {
+  final String skillId;
+  final String name;
+  final String symbol;
+  final double difficulty;
+  final int reps;
+  final EquipmentType selectedEquipment;
+
+  const SkillButton({
+    super.key,
+    required this.skillId,
+    required this.name,
+    required this.symbol,
+    required this.difficulty,
+    required this.reps,
+    required this.selectedEquipment,
+  });
 
   @override
   State<SkillButton> createState() => _SkillButtonState();
 }
 
 class _SkillButtonState extends State<SkillButton> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = '${widget.skill.reps}';
+  void _incrementCounter(BuildContext context) {
+    // Dispatch the increment event to the SkillBloc
+    context
+        .read<SkillBloc>()
+        .add(IncrementReps(widget.skillId, widget.selectedEquipment));
   }
 
-  void _incrementCounter() {
-    setState(() {
-      widget.skill.reps++;
-      _controller.text = '${widget.skill.reps}';
-    });
-  }
-
-  void resetReps() {
-    setState(() {
-      widget.skill.reps = 0;
-      _controller.text = '${widget.skill.reps}';
-    });
+  void _resetReps(BuildContext context) {
+    // Dispatch the update event with reps set to 0 to the SkillBloc
+    context
+        .read<SkillBloc>()
+        .add(UpdateReps(widget.skillId, widget.selectedEquipment, 0));
   }
 
   @override
@@ -46,11 +51,11 @@ class _SkillButtonState extends State<SkillButton> {
         builder: (context, state) {
           String displayText;
           if (state.textDisplay == TextType.symbol) {
-            displayText = widget.skill.symbol;
+            displayText = widget.symbol;
           } else if (state.textDisplay == TextType.name) {
-            displayText = widget.skill.name;
+            displayText = widget.name;
           } else {
-            displayText = widget.skill.difficulty.toString();
+            displayText = widget.difficulty.toString();
           }
 
           return ElevatedButton(
@@ -58,8 +63,8 @@ class _SkillButtonState extends State<SkillButton> {
               backgroundColor:
                   WidgetStateProperty.all<Color?>(Colors.grey[200]),
             ),
-            onLongPress: () => resetReps(),
-            onPressed: () => _incrementCounter(),
+            onLongPress: () => _resetReps(context),
+            onPressed: () => _incrementCounter(context),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +75,7 @@ class _SkillButtonState extends State<SkillButton> {
                     style: const TextStyle(color: Colors.black),
                   ),
                   Text(
-                    widget.skill.reps.toString(),
+                    '${widget.reps}', // Display current reps
                     style: const TextStyle(color: Colors.black),
                   ),
                 ],

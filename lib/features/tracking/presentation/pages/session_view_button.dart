@@ -1,14 +1,10 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tumblelog/constants.dart';
-import 'package:tumblelog/controllers/skill_controller.dart';
-import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/equipment_dropdown.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/skill_button.dart';
 
-//TODO: UI test
 class SessionViewButton extends StatefulWidget {
   const SessionViewButton({super.key});
 
@@ -17,82 +13,56 @@ class SessionViewButton extends StatefulWidget {
 }
 
 class _SessionViewButtonState extends State<SessionViewButton> {
-  late SharedPreferences pref;
-  List<SkillEntity> skills = defaultSkills;
-  bool isLoading = true;
-  EquipmentType selectedEquipment = EquipmentType.rodFloor; // Default equipment
-
-  @override
-  void initState() {
-    super.initState();
-    _initPref();
-  }
-
-  Future<void> _initPref() async {
-    pref = await SharedPreferences.getInstance();
-    _loadSkillsForToday();
-    setState(() {
-      isLoading = false; // Set loading to false after initialization
-    });
-  }
-
-  // TODO: Replace with databases
-  Future<void> _loadSkillsForToday() async {
-    String date = getCurrentDate();
-    List<SkillEntity> loadedSkills = await loadSkills(date, pref);
-
-    // If skills exist for today, update the state
-    if (loadedSkills.isNotEmpty) {
-      setState(() {
-        skills = loadedSkills;
-      });
-    } else {
-      setState(() {
-        skills = defaultSkills;
-      });
-    }
-  }
-
-  String getCurrentDate() {
-    final now = DateTime.now();
-    return DateFormat('MMMM d, yyyy').format(now);
-  }
-
-  void _onEquipmentChanged(EquipmentType newEquipment) {
-    setState(() {
-      selectedEquipment = newEquipment;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(
-          child: CircularProgressIndicator()); // Show loading indicator
-    }
+    return BlocProvider(
+      create: (context) => SkillBloc()..add(LoadSkills()),
+      child: Scaffold(
+        appBar: const SessionAppBar(),
+        body: BlocBuilder<SkillBloc, SkillState>(
+          builder: (context, state) {
+            if (state is SkillLoading) {
+              return const CircularProgressIndicator();
+            } else if (state is SkillLoaded) {
+              return Column(
+                children: [
+                  EquipmentDropdown(
+                    initialEquipment: state.selectedEquipment,
+                    onEquipmentChanged: (newEquipment) {
+                      context
+                          .read<SkillBloc>()
+                          .add(ChangeEquipment(newEquipment));
+                    },
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3),
+                      itemCount: state.skills.length,
+                      itemBuilder: (context, index) {
+                        final skill = state.skills[index];
+                        return SkillButton(
+                          skillId: skill.id,
+                          name: skill.name,
+                          symbol: skill.symbol,
+                          difficulty: skill.difficulty,
+                          reps: skill
+                              .getRepsForEquipment(state.selectedEquipment),
+                          selectedEquipment: state.selectedEquipment,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            } else if (state is SkillError) {
+              return Text('Error: ${state.message}');
+            }
 
-    return Scaffold(
-      appBar: SessionAppBar(
-        pref: pref,
-        skills: skills,
-      ),
-      body: Column(
-        children: [
-          EquipmentDropdown(
-            initialEquipment: selectedEquipment,
-            onEquipmentChanged: _onEquipmentChanged,
-          ),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3),
-              itemCount: skills.length,
-              itemBuilder: (context, index) {
-                return SkillButton(skill: skills[index]);
-              },
-            ),
-          ),
-        ],
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
