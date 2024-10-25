@@ -24,22 +24,26 @@ final class SkillLoading extends SkillState {
 final class SkillLoaded extends SkillState {
   final List<SkillEntity> skills;
   final EquipmentType selectedEquipment;
+  final SessionEntity session;
 
   const SkillLoaded({
     required this.skills,
     required this.selectedEquipment,
+    required this.session,
   });
 
   @override
-  List<Object?> get props => [skills, selectedEquipment];
+  List<Object?> get props => [skills, selectedEquipment, session];
 
   SkillLoaded copyWith({
     List<SkillEntity>? skills,
     EquipmentType? selectedEquipment,
+    SessionEntity? session,
   }) {
     return SkillLoaded(
       skills: skills ?? this.skills,
       selectedEquipment: selectedEquipment ?? this.selectedEquipment,
+      session: session ?? this.session,
     );
   }
 }

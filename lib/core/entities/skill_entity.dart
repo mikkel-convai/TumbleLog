@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 
 class SkillEntity extends Equatable {
   final String id;
+  final String sessionId;
   final String name;
   final String symbol;
   final double difficulty;
@@ -11,6 +12,7 @@ class SkillEntity extends Equatable {
 
   SkillEntity({
     String? id,
+    required this.sessionId,
     required this.name,
     required this.symbol,
     required this.difficulty,
@@ -36,6 +38,7 @@ class SkillEntity extends Equatable {
       ..update(equipment, (reps) => reps + 1, ifAbsent: () => 1);
     return SkillEntity(
       id: id,
+      sessionId: sessionId,
       name: name,
       symbol: symbol,
       difficulty: difficulty,
@@ -49,6 +52,7 @@ class SkillEntity extends Equatable {
       ..update(equipment, (reps) => reps > 0 ? reps - 1 : 0);
     return SkillEntity(
       id: id,
+      sessionId: sessionId,
       name: name,
       symbol: symbol,
       difficulty: difficulty,
@@ -62,6 +66,7 @@ class SkillEntity extends Equatable {
       ..[equipment] = newReps;
     return SkillEntity(
       id: id,
+      sessionId: sessionId,
       name: name,
       symbol: symbol,
       difficulty: difficulty,
@@ -71,5 +76,12 @@ class SkillEntity extends Equatable {
 
   // Overrides for Equatable to compare fields for equality
   @override
-  List<Object?> get props => [id, name, symbol, difficulty, equipmentReps];
+  List<Object?> get props => [
+        id,
+        sessionId,
+        name,
+        symbol,
+        difficulty,
+        equipmentReps,
+      ];
 }

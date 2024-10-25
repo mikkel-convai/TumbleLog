@@ -1,14 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tumblelog/constants.dart';
+import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/utils/json_to_skill_entity.dart';
-import 'package:tumblelog/features/tracking/domain/entities/skill_entity.dart';
+import 'package:tumblelog/core/entities/skill_entity.dart';
 
 part 'skill_event.dart';
 part 'skill_state.dart';
 
 class SkillBloc extends Bloc<SkillEvent, SkillState> {
-  SkillBloc() : super(const SkillInitial()) {
+  final SessionEntity session;
+
+  SkillBloc({required this.session}) : super(const SkillInitial()) {
     on<LoadSkills>((event, emit) {
       emit(const SkillLoading());
       try {
@@ -17,12 +20,17 @@ class SkillBloc extends Bloc<SkillEvent, SkillState> {
         if (event.skills != null) {
           skills = event.skills;
         } else {
-          skills =
-              mapJsonToSkillEntities(defaultSkillsJson); // Mock data loader
+          skills = mapJsonToSkillEntities(
+            defaultSkillsJson,
+            session.id,
+          ); // Mock data loader
         }
 
         emit(SkillLoaded(
-            skills: skills!, selectedEquipment: EquipmentType.rodFloor));
+          skills: skills!,
+          selectedEquipment: EquipmentType.rodFloor,
+          session: session,
+        ));
       } catch (e) {
         emit(SkillError(e.toString()));
       }
