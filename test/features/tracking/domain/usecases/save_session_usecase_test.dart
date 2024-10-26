@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
+import 'package:tumblelog/core/entities/skill_entity.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 
 import '../repositories/session_repository.mocks.dart';
@@ -22,10 +23,25 @@ void main() {
       date: DateTime.now(),
     );
 
+    final List<SkillEntity> skills = [
+      SkillEntity(
+        sessionId: 'sessionId',
+        name: 'whip',
+        symbol: '^',
+        difficulty: 0.2,
+      ),
+      SkillEntity(
+        sessionId: 'sessionId',
+        name: 'db strakt',
+        symbol: '--/',
+        difficulty: 2.4,
+      )
+    ];
+
     // Act
-    await saveSessionUseCase.execute(session: session);
+    await saveSessionUseCase.execute(session: session, skills: skills);
 
     // Assert
-    verify(mockSessionRepository.saveSession(session)).called(1);
+    verify(mockSessionRepository.saveSession(session, skills)).called(1);
   });
 }

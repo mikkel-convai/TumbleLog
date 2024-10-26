@@ -3,9 +3,13 @@ import 'package:test/test.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
+import 'package:tumblelog/injection_container.dart';
 
-void main() {
+void main() async {
+  setUpAll(() => setupLocator());
+
   final SessionEntity mockSession = SessionEntity(
     id: 'session123', // Ensure sessionId is passed
     athleteId: 'athleteId',
@@ -38,7 +42,10 @@ void main() {
   group('SkillBloc', () {
     blocTest<SkillBloc, SkillState>(
       'emits SkillLoading and SkillLoaded when LoadSkill is added, and checks sessionId',
-      build: () => SkillBloc(session: mockSession),
+      build: () => SkillBloc(
+        session: mockSession,
+        saveSessionUseCase: getIt<SaveSessionUseCase>(),
+      ),
       act: (bloc) => bloc.add(LoadSkills(skills: mockSkills)),
       expect: () => <SkillState>[
         const SkillLoading(),
@@ -59,7 +66,10 @@ void main() {
 
     blocTest<SkillBloc, SkillState>(
       'Increments number of reps for given skill and equipment, and checks sessionId',
-      build: () => SkillBloc(session: mockSession),
+      build: () => SkillBloc(
+        session: mockSession,
+        saveSessionUseCase: getIt<SaveSessionUseCase>(),
+      ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),
         selectedEquipment: EquipmentType.rodFloor,
@@ -106,7 +116,10 @@ void main() {
 
     blocTest<SkillBloc, SkillState>(
       'Decreases number of reps for a given skill and equipment, and checks sessionId',
-      build: () => SkillBloc(session: mockSession),
+      build: () => SkillBloc(
+        session: mockSession,
+        saveSessionUseCase: getIt<SaveSessionUseCase>(),
+      ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),
         selectedEquipment: EquipmentType.rodFloor,
@@ -153,7 +166,10 @@ void main() {
 
     blocTest<SkillBloc, SkillState>(
       'Update number of reps for a given skill and equipment, and checks sessionId',
-      build: () => SkillBloc(session: mockSession),
+      build: () => SkillBloc(
+        session: mockSession,
+        saveSessionUseCase: getIt<SaveSessionUseCase>(),
+      ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),
         selectedEquipment: EquipmentType.rodFloor,

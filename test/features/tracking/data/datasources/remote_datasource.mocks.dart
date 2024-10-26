@@ -7,6 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tumblelog/core/models/session_model.dart' as _i4;
+import 'package:tumblelog/core/models/skill_model.dart' as _i5;
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart'
     as _i2;
 
@@ -33,11 +34,17 @@ class MockSessionRemoteDataSourceImpl extends _i1.Mock
   }
 
   @override
-  _i3.Future<void> saveSession(_i4.SessionModel? session) =>
+  _i3.Future<void> saveSession(
+    _i4.SessionModel? session,
+    List<_i5.SkillModel>? skills,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveSession,
-          [session],
+          [
+            session,
+            skills,
+          ],
         ),
         returnValue: _i3.Future<void>.value(),
         returnValueForMissingStub: _i3.Future<void>.value(),

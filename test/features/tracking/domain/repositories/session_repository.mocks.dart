@@ -7,6 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:tumblelog/core/entities/session_entity.dart' as _i4;
+import 'package:tumblelog/core/entities/skill_entity.dart' as _i5;
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart'
     as _i2;
 
@@ -32,11 +33,17 @@ class MockSessionRepository extends _i1.Mock implements _i2.SessionRepository {
   }
 
   @override
-  _i3.Future<void> saveSession(_i4.SessionEntity? session) =>
+  _i3.Future<void> saveSession(
+    _i4.SessionEntity? session,
+    List<_i5.SkillEntity>? skills,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveSession,
-          [session],
+          [
+            session,
+            skills,
+          ],
         ),
         returnValue: _i3.Future<void>.value(),
         returnValueForMissingStub: _i3.Future<void>.value(),

@@ -4,14 +4,19 @@ import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/utils/json_to_skill_entity.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 
 part 'skill_event.dart';
 part 'skill_state.dart';
 
 class SkillBloc extends Bloc<SkillEvent, SkillState> {
   final SessionEntity session;
+  final SaveSessionUseCase saveSessionUseCase;
 
-  SkillBloc({required this.session}) : super(const SkillInitial()) {
+  SkillBloc({
+    required this.session,
+    required this.saveSessionUseCase,
+  }) : super(const SkillInitial()) {
     on<LoadSkills>((event, emit) {
       emit(const SkillLoading());
       try {
@@ -79,6 +84,16 @@ class SkillBloc extends Bloc<SkillEvent, SkillState> {
       if (state is SkillLoaded) {
         emit((state as SkillLoaded)
             .copyWith(selectedEquipment: event.newEquipment));
+      }
+    });
+
+    on<SkillSaveSession>((event, emit) async {
+      if (state is SkillLoaded) {
+        final currentState = state as SkillLoaded;
+        final session = currentState.session;
+        final skills = currentState.skills;
+
+        await saveSessionUseCase.execute(session: session, skills: skills);
       }
     });
   }

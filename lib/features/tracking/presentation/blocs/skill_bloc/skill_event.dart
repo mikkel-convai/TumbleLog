@@ -35,3 +35,5 @@ class ChangeEquipment extends SkillEvent {
 
   ChangeEquipment(this.newEquipment);
 }
+
+class SkillSaveSession extends SkillEvent {}

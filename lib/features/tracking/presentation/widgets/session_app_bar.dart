@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
+import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 
 class SessionAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SessionAppBar({
@@ -41,6 +42,16 @@ class SessionAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () => context.read<LayoutCubit>().toggleTextDisplay(),
               tooltip: "Toggle Text Size",
+            ),
+
+            // Save button
+            IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: () {
+                // Trigger save functionality in SkillBloc or the appropriate bloc
+                context.read<SkillBloc>().add(SkillSaveSession());
+              },
+              tooltip: "Save Session",
             ),
           ],
         );
