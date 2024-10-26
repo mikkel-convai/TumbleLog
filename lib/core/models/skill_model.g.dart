@@ -8,11 +8,11 @@ part of 'skill_model.dart';
 
 SkillModel _$SkillModelFromJson(Map<String, dynamic> json) => SkillModel(
       id: json['id'] as String,
-      sessionId: json['sessionId'] as String,
+      sessionId: json['session_id'] as String,
       name: json['name'] as String,
       symbol: json['symbol'] as String,
       difficulty: (json['difficulty'] as num).toDouble(),
-      equipmentReps: (json['equipmentReps'] as Map<String, dynamic>).map(
+      equipmentReps: (json['equipment_reps'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
             $enumDecode(_$EquipmentTypeEnumMap, k), (e as num).toInt()),
       ),
@@ -21,11 +21,11 @@ SkillModel _$SkillModelFromJson(Map<String, dynamic> json) => SkillModel(
 Map<String, dynamic> _$SkillModelToJson(SkillModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'sessionId': instance.sessionId,
+      'session_id': instance.sessionId,
       'name': instance.name,
       'symbol': instance.symbol,
       'difficulty': instance.difficulty,
-      'equipmentReps': instance.equipmentReps
+      'equipment_reps': instance.equipmentReps
           .map((k, e) => MapEntry(_$EquipmentTypeEnumMap[k]!, e)),
     };
 

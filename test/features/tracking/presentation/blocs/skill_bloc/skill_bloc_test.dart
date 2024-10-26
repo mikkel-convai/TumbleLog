@@ -7,8 +7,18 @@ import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 import 'package:tumblelog/injection_container.dart';
 
+import '../../../domain/usecases/save_session.mocks.dart';
+
 void main() async {
-  setUpAll(() => setupLocator());
+  late MockSaveSessionUseCase mockSaveSessionUseCase;
+
+  setUpAll(() {
+    // Initialize the mock instance
+    mockSaveSessionUseCase = MockSaveSessionUseCase();
+
+    // Override the real SaveSessionUseCase with the mock
+    getIt.registerFactory<SaveSessionUseCase>(() => mockSaveSessionUseCase);
+  });
 
   final SessionEntity mockSession = SessionEntity(
     id: 'session123', // Ensure sessionId is passed

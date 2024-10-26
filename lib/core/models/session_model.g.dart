@@ -8,15 +8,15 @@ part of 'session_model.dart';
 
 SessionModel _$SessionModelFromJson(Map<String, dynamic> json) => SessionModel(
       id: json['id'] as String,
-      athleteId: json['athleteId'] as String,
+      athleteId: json['athlete_id'] as String,
       date: DateTime.parse(json['date'] as String),
-      athleteName: json['athleteName'] as String? ?? 'Grisha',
+      athleteName: json['athlete_name'] as String? ?? 'Grisha',
     );
 
 Map<String, dynamic> _$SessionModelToJson(SessionModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'athleteId': instance.athleteId,
-      'athleteName': instance.athleteName,
+      'athlete_id': instance.athleteId,
+      'athlete_name': instance.athleteName,
       'date': instance.date.toIso8601String(),
     };

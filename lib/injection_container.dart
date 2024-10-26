@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
@@ -8,10 +9,12 @@ import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_
 
 final getIt = GetIt.instance;
 
-void setupLocator() {
+void setupLocator() async {
+  final supabaseClient = Supabase.instance.client;
+
   // Register the data sources
   getIt.registerLazySingleton<SessionRemoteDataSource>(
-    () => SessionRemoteDataSourceImpl(),
+    () => SessionRemoteDataSourceImpl(supabaseClient),
   );
 
   // Register the repositories

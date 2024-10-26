@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'session_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SessionModel extends Equatable {
   final String id;
   final String athleteId;

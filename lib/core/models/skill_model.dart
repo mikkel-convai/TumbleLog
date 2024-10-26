@@ -4,7 +4,7 @@ import 'package:tumblelog/constants.dart';
 
 part 'skill_model.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class SkillModel extends Equatable {
   final String id;
   final String sessionId;
