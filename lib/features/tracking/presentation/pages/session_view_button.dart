@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/equipment_dropdown.dart';
-import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/widgets/skill_button.dart';
 
 class SessionViewButton extends StatelessWidget {
@@ -11,7 +10,6 @@ class SessionViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SessionAppBar(),
       body: BlocBuilder<SkillBloc, SkillState>(
         builder: (context, state) {
           if (state is SkillLoading) {

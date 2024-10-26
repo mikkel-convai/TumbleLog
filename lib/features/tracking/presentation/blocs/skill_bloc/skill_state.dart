@@ -56,3 +56,19 @@ final class SkillError extends SkillState {
   @override
   List<Object?> get props => [message];
 }
+
+final class SkillSaveFailure extends SkillState {
+  final String message;
+  const SkillSaveFailure(this.message);
+
+  @override
+  List<Object?> get props => [];
+}
+
+final class SkillSaveSuccess extends SkillState {
+  final String message;
+  const SkillSaveSuccess(this.message);
+
+  @override
+  List<Object?> get props => [];
+}

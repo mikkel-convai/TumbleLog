@@ -93,7 +93,17 @@ class SkillBloc extends Bloc<SkillEvent, SkillState> {
         final session = currentState.session;
         final skills = currentState.skills;
 
-        await saveSessionUseCase.execute(session: session, skills: skills);
+        final result =
+            await saveSessionUseCase.execute(session: session, skills: skills);
+
+        result.fold(
+          (failure) {
+            emit(SkillSaveFailure(failure.message)); // Emit failure state
+          },
+          (success) {
+            emit(SkillSaveSuccess(success.message)); // Emit success state
+          },
+        );
       }
     });
   }

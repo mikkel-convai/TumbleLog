@@ -1,6 +1,6 @@
 # My ignores
 tumblelogpage
-.env
+*.env
 
 # Miscellaneous
 *.class

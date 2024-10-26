@@ -17,11 +17,11 @@ void main() {
 
     final skillJson = {
       'id': '1',
-      'sessionId': 'session123',
+      'session_id': 'session123',
       'name': 'Whip',
       'symbol': '^',
       'difficulty': 0.5,
-      'equipmentReps': {
+      'equipment_reps': {
         'rodFloor': 3,
       },
     };

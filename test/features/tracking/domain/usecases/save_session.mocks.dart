@@ -3,15 +3,18 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
+import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:tumblelog/core/entities/session_entity.dart' as _i5;
-import 'package:tumblelog/core/entities/skill_entity.dart' as _i6;
+import 'package:tumblelog/core/entities/session_entity.dart' as _i8;
+import 'package:tumblelog/core/entities/skill_entity.dart' as _i9;
+import 'package:tumblelog/core/utils/failure.dart' as _i6;
+import 'package:tumblelog/core/utils/success.dart' as _i7;
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart'
     as _i2;
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart'
-    as _i3;
+    as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -37,11 +40,21 @@ class _FakeSessionRepository_0 extends _i1.SmartFake
         );
 }
 
+class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
+  _FakeEither_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [SaveSessionUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockSaveSessionUseCase extends _i1.Mock
-    implements _i3.SaveSessionUseCase {
+    implements _i4.SaveSessionUseCase {
   MockSaveSessionUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -56,9 +69,9 @@ class MockSaveSessionUseCase extends _i1.Mock
       ) as _i2.SessionRepository);
 
   @override
-  _i4.Future<void> execute({
-    required _i5.SessionEntity? session,
-    required List<_i6.SkillEntity>? skills,
+  _i5.Future<_i3.Either<_i6.Failure, _i7.Success>> execute({
+    required _i8.SessionEntity? session,
+    required List<_i9.SkillEntity>? skills,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -69,7 +82,17 @@ class MockSaveSessionUseCase extends _i1.Mock
             #skills: skills,
           },
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<_i3.Either<_i6.Failure, _i7.Success>>.value(
+            _FakeEither_1<_i6.Failure, _i7.Success>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
+            {
+              #session: session,
+              #skills: skills,
+            },
+          ),
+        )),
+      ) as _i5.Future<_i3.Either<_i6.Failure, _i7.Success>>);
 }

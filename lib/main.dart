@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:tumblelog/features/home/presentation/home_page.dart';
 import 'package:tumblelog/injection_container.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -7,13 +6,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables
-  await dotenv.load();
-
-  // Initialize Supabase with values from the .env file
+  // TODO: Hide keys
   await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+    url: 'https://iszxmsufbsisxdelhpvb.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlzenhtc3VmYnNpc3hkZWxocHZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5MzM0MDksImV4cCI6MjA0NTUwOTQwOX0.VhjVvMTZEQ06x-ODMEjaCiU0VQo0xxPdLseHoXI-Myg',
   );
 
   setupLocator();

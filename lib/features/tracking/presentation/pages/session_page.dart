@@ -7,6 +7,7 @@ import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layo
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 import 'package:tumblelog/features/tracking/presentation/pages/session_view_bar.dart';
 import 'package:tumblelog/features/tracking/presentation/pages/session_view_button.dart';
+import 'package:tumblelog/features/tracking/presentation/widgets/session_app_bar.dart';
 import 'package:tumblelog/injection_container.dart';
 
 class SessionPage extends StatelessWidget {
@@ -21,15 +22,36 @@ class SessionPage extends StatelessWidget {
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
       )..add(LoadSkills()),
       child: Scaffold(
+        appBar: const SessionAppBar(),
         body: SafeArea(
-          child: BlocBuilder<LayoutCubit, LayoutState>(
-            builder: (context, state) {
-              if (state.layout == LayoutType.grid) {
-                return const SessionViewButton(); // Show buttons layout
-              } else {
-                return const SessionViewBar(); // Show bars layout
+          child: BlocListener<SkillBloc, SkillState>(
+            listener: (context, state) {
+              if (state is SkillSaveSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+                Navigator.of(context).pop();
+              } else if (state is SkillSaveFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
               }
             },
+            child: BlocBuilder<LayoutCubit, LayoutState>(
+              builder: (context, state) {
+                if (state.layout == LayoutType.grid) {
+                  return const SessionViewButton(); // Show buttons layout
+                } else {
+                  return const SessionViewBar(); // Show bars layout
+                }
+              },
+            ),
           ),
         ),
       ),

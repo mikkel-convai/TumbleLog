@@ -4,8 +4,6 @@ import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 
-// TODO: Figure out if i should use bloc instead of child object passed down
-
 class SkillButton extends StatefulWidget {
   final String skillId;
   final String name;

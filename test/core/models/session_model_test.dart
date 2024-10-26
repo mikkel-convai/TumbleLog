@@ -12,8 +12,8 @@ void main() {
 
     final sessionJson = {
       'id': 'session123',
-      'athleteId': 'athlete456',
-      'athleteName': 'Grisha',
+      'athlete_id': 'athlete456',
+      'athlete_name': 'Grisha',
       'date': '2023-10-26T00:00:00.000',
     };
 

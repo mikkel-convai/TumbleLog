@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
@@ -5,6 +6,7 @@ import 'package:tumblelog/core/entities/skill_entity.dart';
 import 'package:tumblelog/core/models/session_model.dart';
 import 'package:tumblelog/core/models/skill_model.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
+import 'package:tumblelog/core/utils/success.dart';
 
 import '../datasources/remote_datasource.mocks.dart';
 
@@ -59,6 +61,10 @@ void main() {
         equipmentReps: skill.equipmentReps,
       );
     }).toList();
+
+    // Stub the saveSession method to return a success response
+    when(mockRemoteDataSource.saveSession(any, any))
+        .thenAnswer((_) async => Right(Success(message: 'Session uploaded.')));
 
     // Act
     await repository.saveSession(session, skills);
