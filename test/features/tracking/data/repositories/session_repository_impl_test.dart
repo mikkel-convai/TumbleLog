@@ -17,7 +17,7 @@ void main() {
   late SessionRepositoryImpl repository;
 
   final List<SessionModel> mockSessionModels =
-      parseSessionsFromString(defaultSessionJson);
+      parseSessionModelsFromString(defaultSessionJson);
 
   setUp(() {
     mockRemoteDataSource = MockSessionRemoteDataSourceImpl();

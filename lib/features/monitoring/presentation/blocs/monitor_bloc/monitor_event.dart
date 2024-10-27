@@ -6,3 +6,7 @@ sealed class MonitorEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+final class MonitorLoadSessions extends MonitorEvent {
+  const MonitorLoadSessions();
+}

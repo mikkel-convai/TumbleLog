@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
+import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart';
@@ -32,12 +33,14 @@ void setupLocator() async {
     () => LoadSessionsUseCase(repository: getIt<SessionRepository>()),
   );
 
-  // Register the bloc (with dependencies injected)
+  // Register blocs
   getIt.registerFactory<SkillBloc>(
     () => SkillBloc(
-      session:
-          getIt<SessionEntity>(), // Inject a session or pass it manually later
+      session: getIt<SessionEntity>(),
       saveSessionUseCase: getIt<SaveSessionUseCase>(),
     ),
+  );
+  getIt.registerFactory<MonitorBloc>(
+    () => MonitorBloc(loadSessions: getIt<LoadSessionsUseCase>()),
   );
 }
