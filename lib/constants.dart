@@ -24,6 +24,29 @@ extension EquipmentTypeExtension on EquipmentType {
   }
 }
 
+String defaultSessionJson = """
+[
+  {
+    "id": "c34451aa-0c1a-40a5-9ccf-9844b9cf0245",
+    "athlete_id": "athlete123",
+    "athlete_name": "Grisha",
+    "date": "2024-10-27 08:30:22.653"
+  },
+  {
+    "id": "fa4d19c6-8512-4cf2-a6ec-0899bbce187e",
+    "athlete_id": "athlete123",
+    "athlete_name": "Grisha",
+    "date": "2024-10-27 10:41:19.456"
+  },
+  {
+    "id": "c34451aa-0c1a-40a5-9ccf-9844b9cf0243",
+    "athlete_id": "athlete123",
+    "athlete_name": "Grisha",
+    "date": "2024-10-28 08:30:22.653"
+  }
+]
+""";
+
 String defaultSkillsJson = """
 [
   {

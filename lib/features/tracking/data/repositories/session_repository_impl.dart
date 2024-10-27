@@ -40,4 +40,30 @@ class SessionRepositoryImpl implements SessionRepository {
 
     return await remoteDataSource.saveSession(sessionModel, skillModels);
   }
+
+  @override
+  Future<List<SessionEntity>> loadSessions() async {
+    try {
+      // Call remote data source
+      final List<SessionModel> sessionModels =
+          await remoteDataSource.loadSessions();
+
+      // Transform model to entity
+      final List<SessionEntity> sessions = sessionModels.map((session) {
+        return SessionEntity(
+          id: session.id,
+          athleteId: session.athleteId,
+          athleteName: session.athleteName,
+          date: session.date,
+        );
+      }).toList();
+
+      // return session entity
+      return sessions;
+    } catch (e) {
+      // TODO: Handle errors
+      print('Error occured: $e');
+      return [];
+    }
+  }
 }

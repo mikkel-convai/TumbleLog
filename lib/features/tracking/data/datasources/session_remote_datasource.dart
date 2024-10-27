@@ -8,6 +8,8 @@ import 'package:tumblelog/core/utils/success.dart';
 abstract class SessionRemoteDataSource {
   Future<Either<Failure, Success>> saveSession(
       SessionModel session, List<SkillModel> skills);
+
+  Future<List<SessionModel>> loadSessions();
 }
 
 class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
@@ -44,5 +46,17 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     } catch (e) {
       return Left(Failure(message: 'Error saving session and skills: $e'));
     }
+  }
+
+  @override
+  Future<List<SessionModel>> loadSessions() {
+    // Call supabase
+
+    // Transform JSON -> Model
+
+    // Return models
+
+    // TODO: implement loadSessions
+    throw UnimplementedError();
   }
 }

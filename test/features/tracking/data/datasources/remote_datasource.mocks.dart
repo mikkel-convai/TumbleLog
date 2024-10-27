@@ -71,4 +71,14 @@ class MockSessionRemoteDataSourceImpl extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Success>>);
+
+  @override
+  _i4.Future<List<_i7.SessionModel>> loadSessions() => (super.noSuchMethod(
+        Invocation.method(
+          #loadSessions,
+          [],
+        ),
+        returnValue:
+            _i4.Future<List<_i7.SessionModel>>.value(<_i7.SessionModel>[]),
+      ) as _i4.Future<List<_i7.SessionModel>>);
 }

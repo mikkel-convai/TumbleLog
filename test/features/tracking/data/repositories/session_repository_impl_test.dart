@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
 import 'package:tumblelog/core/models/session_model.dart';
 import 'package:tumblelog/core/models/skill_model.dart';
+import 'package:tumblelog/core/utils/json_to_session_model.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
 import 'package:tumblelog/core/utils/success.dart';
 
@@ -14,9 +16,27 @@ void main() {
   late MockSessionRemoteDataSourceImpl mockRemoteDataSource;
   late SessionRepositoryImpl repository;
 
+  final List<SessionModel> mockSessionModels =
+      parseSessionsFromString(defaultSessionJson);
+
   setUp(() {
     mockRemoteDataSource = MockSessionRemoteDataSourceImpl();
     repository = SessionRepositoryImpl(remoteDataSource: mockRemoteDataSource);
+  });
+
+  test(
+      'loadSession should call remote data source to get sessions and transform from model to entity',
+      () async {
+    // Arrange
+    when(mockRemoteDataSource.loadSessions())
+        .thenAnswer((_) async => mockSessionModels);
+
+    // Act
+    final List<SessionEntity> sessions = await repository.loadSessions();
+
+    // Assert
+    verify(mockRemoteDataSource.loadSessions()).called(1);
+    expect(sessions, isA<List<SessionEntity>>());
   });
 
   test('should call remoteDataSource.saveSession with correct models',

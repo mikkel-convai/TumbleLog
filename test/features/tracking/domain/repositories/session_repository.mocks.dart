@@ -70,4 +70,14 @@ class MockSessionRepository extends _i1.Mock implements _i3.SessionRepository {
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, _i6.Success>>);
+
+  @override
+  _i4.Future<List<_i7.SessionEntity>> loadSessions() => (super.noSuchMethod(
+        Invocation.method(
+          #loadSessions,
+          [],
+        ),
+        returnValue:
+            _i4.Future<List<_i7.SessionEntity>>.value(<_i7.SessionEntity>[]),
+      ) as _i4.Future<List<_i7.SessionEntity>>);
 }

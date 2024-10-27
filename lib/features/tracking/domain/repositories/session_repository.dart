@@ -7,4 +7,6 @@ import 'package:tumblelog/core/utils/success.dart';
 abstract class SessionRepository {
   Future<Either<Failure, Success>> saveSession(
       SessionEntity session, List<SkillEntity> skills);
+
+  Future<List<SessionEntity>> loadSessions();
 }
