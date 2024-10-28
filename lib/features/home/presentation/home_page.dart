@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
+import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                context.read<MonitorBloc>().add(const MonitorLoadSessions());
                 Navigator.push(
                   context,
                   MaterialPageRoute(

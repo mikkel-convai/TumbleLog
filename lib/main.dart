@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           create: (context) => MonitorBloc(
             loadSessions: getIt<LoadSessionsUseCase>(),
             loadSkills: getIt<LoadSkillsUseCase>(),
-          )..add(const MonitorLoadSessions()),
+          ),
         ),
       ],
       child: const MaterialApp(
