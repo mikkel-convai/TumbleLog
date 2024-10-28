@@ -1,8 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/models/session_model.dart';
 import 'package:tumblelog/core/models/skill_model.dart';
 import 'package:tumblelog/core/utils/failure.dart';
+import 'package:tumblelog/core/utils/json_to_session_model.dart';
 import 'package:tumblelog/core/utils/success.dart';
 
 abstract class SessionRemoteDataSource {
@@ -49,7 +51,7 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
   }
 
   @override
-  Future<List<SessionModel>> loadSessions() {
+  Future<List<SessionModel>> loadSessions() async {
     // Call supabase
 
     // Transform JSON -> Model
@@ -57,6 +59,6 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     // Return models
 
     // TODO: implement loadSessions
-    throw UnimplementedError();
+    return parseSessionModelsFromString(defaultSessionJson);
   }
 }
