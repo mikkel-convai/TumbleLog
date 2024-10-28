@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
+import 'package:tumblelog/core/models/skill_model.dart';
 
 List<SkillEntity> mapJsonToSkillEntities(String jsonString, String sessionId) {
   final List<dynamic> skillJsonList = jsonDecode(jsonString);
@@ -20,6 +21,24 @@ List<SkillEntity> parseSkillsFromJson(String jsonString, String sessionId) {
   return jsonList
       .where((json) => json['session_id'] == sessionId)
       .map<SkillEntity>((json) => SkillEntity(
+            id: json['id'],
+            sessionId: json['session_id'],
+            name: json['name'],
+            symbol: json['symbol'],
+            difficulty: json['difficulty'].toDouble(),
+            equipmentReps: (json['equipment_reps'] as Map<String, dynamic>).map(
+              (key, value) =>
+                  MapEntry(equipmentTypeFromString(key), value as int),
+            ),
+          ))
+      .toList();
+}
+
+List<SkillModel> parseSkillModelsFromJson(String jsonString, String sessionId) {
+  final List<dynamic> jsonList = json.decode(jsonString);
+  return jsonList
+      .where((json) => json['session_id'] == sessionId)
+      .map<SkillModel>((json) => SkillModel(
             id: json['id'],
             sessionId: json['session_id'],
             name: json['name'],

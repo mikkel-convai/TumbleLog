@@ -27,8 +27,6 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
           selectedSession: null,
           skills: const [],
         ));
-
-        print('MonitorBloc State after MonitorLoadSession: \n $state');
       } catch (e) {
         emit(MonitorError(message: e.toString()));
       }

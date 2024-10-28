@@ -16,6 +16,7 @@ class SessionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Keeping BlocProvider here to add the right session
     return BlocProvider(
       create: (context) => SkillBloc(
         session: session,

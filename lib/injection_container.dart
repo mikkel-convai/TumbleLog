@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
+import 'package:tumblelog/features/monitoring/data/datasources/skill_remote_datasource.dart';
+import 'package:tumblelog/features/monitoring/data/repositories/skill_repository.dart';
+import 'package:tumblelog/features/monitoring/domain/repositories/skill_repository.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_skills.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
@@ -19,11 +22,17 @@ void setupLocator() async {
   getIt.registerLazySingleton<SessionRemoteDataSource>(
     () => SessionRemoteDataSourceImpl(supabaseClient),
   );
+  getIt.registerLazySingleton<SkillRemoteDataSource>(
+    () => SkillRemoteDataSourceImpl(supabaseClient),
+  );
 
   // Register the repositories
   getIt.registerLazySingleton<SessionRepository>(
     () => SessionRepositoryImpl(
         remoteDataSource: getIt<SessionRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<SkillRepository>(
+    () => SkillRepositoryImpl(remoteDataSource: getIt<SkillRemoteDataSource>()),
   );
 
   // Register the use cases
@@ -34,7 +43,7 @@ void setupLocator() async {
     () => LoadSessionsUseCase(repository: getIt<SessionRepository>()),
   );
   getIt.registerFactory<LoadSkillsUseCase>(
-    () => LoadSkillsUseCase(repository: getIt<SessionRepository>()),
+    () => LoadSkillsUseCase(repository: getIt<SkillRepository>()),
   );
 
   // Register blocs
