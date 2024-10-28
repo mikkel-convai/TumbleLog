@@ -6,7 +6,6 @@ class LoadSkillsUseCase {
 
   LoadSkillsUseCase({required this.repository});
 
-  // TODO: Make tests
   Future<List<SkillEntity>> execute(String sessionId) async {
     return await repository.loadSkills(sessionId);
   }

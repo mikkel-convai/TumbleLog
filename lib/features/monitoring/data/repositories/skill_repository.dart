@@ -8,7 +8,6 @@ class SkillRepositoryImpl implements SkillRepository {
 
   SkillRepositoryImpl({required this.remoteDataSource});
 
-  // TODO: Test
   @override
   Future<List<SkillEntity>> loadSkills(String sessionId) async {
     try {
@@ -17,6 +16,7 @@ class SkillRepositoryImpl implements SkillRepository {
 
       final List<SkillEntity> skills = skillModels.map((skill) {
         return SkillEntity(
+          id: skill.id,
           sessionId: sessionId,
           name: skill.name,
           symbol: skill.symbol,

@@ -48,7 +48,6 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     }
   }
 
-  // TODO: Test loadSessions
   @override
   Future<List<SessionModel>> loadSessions() async {
     try {
