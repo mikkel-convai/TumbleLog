@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
+import 'package:tumblelog/features/monitoring/domain/usecases/load_skills.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_session_page.dart';
 import 'package:tumblelog/injection_container.dart';
@@ -11,9 +12,10 @@ class MonitorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          MonitorBloc(loadSessions: getIt<LoadSessionsUseCase>())
-            ..add(const MonitorLoadSessions()),
+      create: (context) => MonitorBloc(
+        loadSessions: getIt<LoadSessionsUseCase>(),
+        loadSkills: getIt<LoadSkillsUseCase>(),
+      )..add(const MonitorLoadSessions()),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Monitor Sessions'),
@@ -22,7 +24,7 @@ class MonitorPage extends StatelessWidget {
           builder: (context, state) {
             if (state is MonitorLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is MonitorSessionsLoaded) {
+            } else if (state is MonitorStateLoaded) {
               return ListView.builder(
                 itemCount: state.sessions.length,
                 itemBuilder: (context, index) {

@@ -1,10 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/models/session_model.dart';
 import 'package:tumblelog/core/models/skill_model.dart';
 import 'package:tumblelog/core/utils/failure.dart';
-import 'package:tumblelog/core/utils/json_to_session_model.dart';
 import 'package:tumblelog/core/utils/success.dart';
 
 abstract class SessionRemoteDataSource {
@@ -50,15 +48,26 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     }
   }
 
+  // TODO: Test loadSessions
   @override
   Future<List<SessionModel>> loadSessions() async {
-    // Call supabase
+    try {
+      // Call supabase
+      final List<dynamic> sessionRes =
+          await _supabaseClient.from('sessions').select();
+      // print('Supabase data fetched from remote data source: \n $sessionRes');
 
-    // Transform JSON -> Model
+      // Transform JSON -> Model
+      final sessions =
+          sessionRes.map((json) => SessionModel.fromJson(json)).toList();
+      // print('Session models fetched from remote data source: \n $sessions');
 
-    // Return models
-
-    // TODO: implement loadSessions
-    return parseSessionModelsFromString(defaultSessionJson);
+      // Return models
+      return sessions;
+    } catch (e) {
+      // TODO: Handle errors
+      print('Error occured in remote datasource loadSession: $e');
+      return [];
+    }
   }
 }
