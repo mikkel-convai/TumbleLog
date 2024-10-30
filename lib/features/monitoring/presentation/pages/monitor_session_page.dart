@@ -11,6 +11,9 @@ class MonitorSessionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color subtleRed = Color(0xFFFFE5E5); // A light red
+    final Color subtleGreen = Color(0xFFE5FFEA); // A light green
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Monitor Session'),
@@ -53,9 +56,10 @@ class MonitorSessionPage extends StatelessWidget {
                       return Column(
                         children: equipmentEntries.map((entry) {
                           return Card(
-                            margin: const EdgeInsets.all(8.0),
+                            color: entry.value == 0 ? subtleRed : subtleGreen,
+                            margin: const EdgeInsets.all(15.0),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(20.0),
                               child: Row(
                                 children: [
                                   // Left Column
@@ -65,9 +69,9 @@ class MonitorSessionPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Name: ${skill.name}'),
-                                        Text('Symbol: ${skill.symbol}'),
-                                        Text('Difficulty: ${skill.difficulty}'),
+                                        Text(skill.name),
+                                        Text(skill.symbol),
+                                        Text(skill.difficulty.toString()),
                                       ],
                                     ),
                                   ),
@@ -78,19 +82,21 @@ class MonitorSessionPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                            'Equipment: ${equipmentTypeToString(entry.key)}'),
+                                        Text(equipmentTypeToString(entry.key)),
                                       ],
                                     ),
                                   ),
                                   // Right Column
                                   Expanded(
-                                    flex: 2,
+                                    flex: 3,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        Text('Reps: ${entry.value}'),
+                                        Text(
+                                          entry.value.toString(),
+                                          style: const TextStyle(fontSize: 30),
+                                        ),
                                       ],
                                     ),
                                   ),
