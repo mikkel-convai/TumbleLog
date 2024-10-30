@@ -25,6 +25,8 @@ class SessionRepositoryImpl implements SessionRepository {
       athleteId: session.athleteId,
       date: session.date,
       athleteName: session.athleteName,
+      totalDd: session.totalDd,
+      equipmentDd: session.equipmentDd,
     );
 
     final List<SkillModel> skillModels = skills.map((skill) {
@@ -54,6 +56,7 @@ class SessionRepositoryImpl implements SessionRepository {
           id: session.id,
           athleteId: session.athleteId,
           athleteName: session.athleteName,
+          totalDd: session.totalDd,
           date: session.date,
         );
       }).toList();

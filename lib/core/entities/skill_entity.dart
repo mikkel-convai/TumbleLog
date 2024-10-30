@@ -18,14 +18,9 @@ class SkillEntity extends Equatable {
     required this.difficulty,
     Map<EquipmentType, int>? equipmentReps,
   })  : id = id ?? const Uuid().v4(),
-        equipmentReps = equipmentReps ??
-            {
-              EquipmentType.rodFloor: 0,
-              EquipmentType.airRodFloor: 0,
-              EquipmentType.airFloor: 0,
-              EquipmentType.dmt: 0,
-              EquipmentType.trampoline: 0,
-            };
+        equipmentReps = equipmentReps ?? defaultEquipmentReps;
+
+  // TODO: Move these functions to a use case
 
   // Get reps for a specific equipment
   int getRepsForEquipment(EquipmentType equipment) {

@@ -10,6 +10,7 @@ import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/mo
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/calculate_dd_usecase.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 
@@ -45,12 +46,16 @@ void setupLocator() async {
   getIt.registerFactory<LoadSkillsUseCase>(
     () => LoadSkillsUseCase(repository: getIt<SkillRepository>()),
   );
+  getIt.registerFactory<CalculateDdUseCase>(
+    () => CalculateDdUseCase(),
+  );
 
   // Register blocs
   getIt.registerFactory<SkillBloc>(
     () => SkillBloc(
       session: getIt<SessionEntity>(),
       saveSessionUseCase: getIt<SaveSessionUseCase>(),
+      calcDdUseCase: getIt<CalculateDdUseCase>(),
     ),
   );
   getIt.registerFactory<MonitorBloc>(

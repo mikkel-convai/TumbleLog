@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/calculate_dd_usecase.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
@@ -21,6 +22,7 @@ class SessionPage extends StatelessWidget {
       create: (context) => SkillBloc(
         session: session,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
+        calcDdUseCase: getIt<CalculateDdUseCase>(),
       )..add(LoadSkills()),
       child: Scaffold(
         appBar: const SessionAppBar(),

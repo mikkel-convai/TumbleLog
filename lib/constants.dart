@@ -4,6 +4,22 @@ enum TextType { symbol, name, dd }
 
 enum EquipmentType { rodFloor, airFloor, airRodFloor, dmt, trampoline }
 
+const Map<EquipmentType, int> defaultEquipmentReps = {
+  EquipmentType.rodFloor: 0,
+  EquipmentType.airRodFloor: 0,
+  EquipmentType.airFloor: 0,
+  EquipmentType.dmt: 0,
+  EquipmentType.trampoline: 0,
+};
+
+const Map<EquipmentType, double> defaultEquipmentDd = {
+  EquipmentType.rodFloor: 0.0,
+  EquipmentType.airRodFloor: 0.0,
+  EquipmentType.airFloor: 0.0,
+  EquipmentType.dmt: 0.0,
+  EquipmentType.trampoline: 0.0,
+};
+
 // Extension method to convert enum values to readable strings
 extension EquipmentTypeExtension on EquipmentType {
   String get displayName {

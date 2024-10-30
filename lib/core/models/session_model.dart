@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tumblelog/constants.dart';
 
 part 'session_model.g.dart';
 
@@ -9,12 +10,16 @@ class SessionModel extends Equatable {
   final String athleteId;
   final String athleteName;
   final DateTime date;
+  final double totalDd;
+  final Map<EquipmentType, double> equipmentDd;
 
   const SessionModel({
     required this.id,
     required this.athleteId,
     required this.date,
+    this.totalDd = 0,
     this.athleteName = 'Grisha',
+    this.equipmentDd = defaultEquipmentDd,
   });
 
   // Factory method to create a SessionModel from JSON
@@ -25,5 +30,12 @@ class SessionModel extends Equatable {
   Map<String, dynamic> toJson() => _$SessionModelToJson(this);
 
   @override
-  List<Object?> get props => [id, athleteId, athleteName, date];
+  List<Object?> get props => [
+        id,
+        athleteId,
+        athleteName,
+        totalDd,
+        date,
+        equipmentDd,
+      ];
 }

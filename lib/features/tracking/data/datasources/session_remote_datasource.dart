@@ -25,6 +25,8 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     final List<Map<String, dynamic>> skillsJson =
         skills.map((skill) => skill.toJson()).toList();
 
+    print('Remote data source session model: $sessionJson');
+
     try {
       // Insert session into the 'sessions' table
       final List<Map<String, dynamic>> sessionRes =

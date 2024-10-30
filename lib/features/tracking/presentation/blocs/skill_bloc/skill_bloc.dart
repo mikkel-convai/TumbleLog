@@ -4,6 +4,7 @@ import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/utils/json_to_skill_entity.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/calculate_dd_usecase.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 
 part 'skill_event.dart';
@@ -12,10 +13,12 @@ part 'skill_state.dart';
 class SkillBloc extends Bloc<SkillEvent, SkillState> {
   final SessionEntity session;
   final SaveSessionUseCase saveSessionUseCase;
+  final CalculateDdUseCase calcDdUseCase;
 
   SkillBloc({
     required this.session,
     required this.saveSessionUseCase,
+    required this.calcDdUseCase,
   }) : super(const SkillInitial()) {
     on<LoadSkills>((event, emit) {
       emit(const SkillLoading());
@@ -93,8 +96,16 @@ class SkillBloc extends Bloc<SkillEvent, SkillState> {
         final session = currentState.session;
         final skills = currentState.skills;
 
-        final result =
-            await saveSessionUseCase.execute(session: session, skills: skills);
+        final SessionEntity updatedSession = calcDdUseCase.addSessionDd(
+          sessionId: session.id,
+          athleteId: session.athleteId,
+          athleteName: session.athleteName,
+          date: session.date,
+          skills: skills,
+        );
+
+        final result = await saveSessionUseCase.execute(
+            session: updatedSession, skills: skills);
 
         result.fold(
           (failure) {
