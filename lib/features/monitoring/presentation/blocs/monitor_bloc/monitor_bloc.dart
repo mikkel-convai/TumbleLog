@@ -60,4 +60,20 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
       },
     );
   }
+
+  List<SessionEntity> getWeeklySessionsForAthlete(String athleteId) {
+    final now = DateTime.now();
+    final oneWeekAgo = now.subtract(const Duration(days: 7));
+
+    // Filter sessions by both date and athlete ID
+    return (state is MonitorStateLoaded)
+        ? (state as MonitorStateLoaded)
+            .sessions
+            .where((session) =>
+                session.athleteId == athleteId &&
+                session.date.isAfter(oneWeekAgo) &&
+                session.date.isBefore(now))
+            .toList()
+        : [];
+  }
 }

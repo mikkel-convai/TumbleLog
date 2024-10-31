@@ -77,6 +77,25 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: selectedAthleteId != null
+                  ? () {
+                      context
+                          .read<MonitorBloc>()
+                          .add(const MonitorLoadSessions());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MonitorWeekPage(
+                            athleteId: selectedAthleteId!,
+                          ),
+                        ),
+                      );
+                    }
+                  : null,
+              child: const Text('Weekly view'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
               onPressed: () {
                 context.read<MonitorBloc>().add(const MonitorLoadSessions());
                 Navigator.push(
@@ -87,19 +106,6 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: const Text('View Monitor'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.read<MonitorBloc>().add(const MonitorLoadSessions());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MonitorWeekPage(),
-                  ),
-                );
-              },
-              child: const Text('Weekly view'),
             ),
           ],
         ),

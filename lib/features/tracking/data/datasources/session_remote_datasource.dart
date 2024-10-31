@@ -10,6 +10,9 @@ abstract class SessionRemoteDataSource {
       SessionModel session, List<SkillModel> skills);
 
   Future<List<SessionModel>> loadSessions();
+
+  Future<List<SessionModel>> loadWeeklySessions(String athleteId,
+      {DateTime? fromDate, DateTime? toDate});
 }
 
 class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
@@ -24,8 +27,6 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     final Map<String, dynamic> sessionJson = session.toJson();
     final List<Map<String, dynamic>> skillsJson =
         skills.map((skill) => skill.toJson()).toList();
-
-    print('Remote data source session model: $sessionJson');
 
     try {
       // Insert session into the 'sessions' table
@@ -68,6 +69,34 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
     } catch (e) {
       // TODO: Handle errors
       print('Error occured in remote datasource loadSession: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<List<SessionModel>> loadWeeklySessions(String athleteId,
+      {DateTime? fromDate, DateTime? toDate}) async {
+    // Set default values if not provided
+    fromDate ??= DateTime.now().subtract(const Duration(days: 7));
+    toDate ??= DateTime.now();
+
+    try {
+      // Query Supabase for sessions within the specified date range for the athlete
+      final List<dynamic> sessionRes = await _supabaseClient
+          .from('sessions')
+          .select()
+          .eq('athlete_id', athleteId)
+          .gte('date', fromDate.toIso8601String())
+          .lte('date', toDate.toIso8601String());
+
+      // Transform JSON -> Model
+      final sessions =
+          sessionRes.map((json) => SessionModel.fromJson(json)).toList();
+
+      // Return the list of session models
+      return sessions;
+    } catch (e) {
+      print('Error occurred in loadWeeklySessions: $e');
       return [];
     }
   }

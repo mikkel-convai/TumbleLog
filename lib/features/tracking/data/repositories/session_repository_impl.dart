@@ -57,6 +57,7 @@ class SessionRepositoryImpl implements SessionRepository {
           athleteId: session.athleteId,
           athleteName: session.athleteName,
           totalDd: session.totalDd,
+          equipmentDd: session.equipmentDd,
           date: session.date,
         );
       }).toList();
