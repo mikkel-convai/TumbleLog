@@ -11,8 +11,8 @@ class MonitorSessionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color subtleRed = Color(0xFFFFE5E5); // A light red
-    final Color subtleGreen = Color(0xFFE5FFEA); // A light green
+    const Color subtleRed = Color(0xFFFFE5E5); // A light red
+    const Color subtleGreen = Color(0xFFE5FFEA); // A light green
 
     return Scaffold(
       appBar: AppBar(

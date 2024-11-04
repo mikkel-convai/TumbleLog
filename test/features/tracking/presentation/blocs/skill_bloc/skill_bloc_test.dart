@@ -3,6 +3,7 @@ import 'package:test/test.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/entities/skill_entity.dart';
+import 'package:tumblelog/features/tracking/domain/usecases/calculate_dd_usecase.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/skill_bloc/skill_bloc.dart';
 import 'package:tumblelog/injection_container.dart';
@@ -55,6 +56,7 @@ void main() async {
       build: () => SkillBloc(
         session: mockSession,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
+        calcDdUseCase: getIt<CalculateDdUseCase>(),
       ),
       act: (bloc) => bloc.add(LoadSkills(skills: mockSkills)),
       expect: () => <SkillState>[
@@ -79,6 +81,7 @@ void main() async {
       build: () => SkillBloc(
         session: mockSession,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
+        calcDdUseCase: getIt<CalculateDdUseCase>(),
       ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),
@@ -129,6 +132,7 @@ void main() async {
       build: () => SkillBloc(
         session: mockSession,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
+        calcDdUseCase: getIt<CalculateDdUseCase>(),
       ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),
@@ -179,6 +183,7 @@ void main() async {
       build: () => SkillBloc(
         session: mockSession,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
+        calcDdUseCase: getIt<CalculateDdUseCase>(),
       ),
       seed: () => SkillLoaded(
         skills: List<SkillEntity>.from(mockSkills),

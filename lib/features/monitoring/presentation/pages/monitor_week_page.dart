@@ -8,7 +8,7 @@ import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/mo
 class MonitorWeekPage extends StatelessWidget {
   final String athleteId;
 
-  MonitorWeekPage({super.key, required this.athleteId});
+  const MonitorWeekPage({super.key, required this.athleteId});
 
   @override
   Widget build(BuildContext context) {
