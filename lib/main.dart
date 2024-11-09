@@ -13,7 +13,6 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // TODO: Hide keys
   await Supabase.initialize(
     url: dotenv.env['DB_URL']!,
     anonKey: dotenv.env['DB_KEY']!,
