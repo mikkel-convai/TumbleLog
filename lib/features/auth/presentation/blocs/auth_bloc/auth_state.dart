@@ -20,7 +20,7 @@ final class AuthError extends AppAuthState {
 }
 
 final class AuthAuthenticated extends AppAuthState {
-  final String user;
+  final AppUser user;
   final Session session;
 
   const AuthAuthenticated({

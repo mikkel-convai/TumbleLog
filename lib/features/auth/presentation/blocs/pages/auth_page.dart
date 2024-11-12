@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/home/presentation/pages/home_page.dart';
 
 class AuthPage extends StatelessWidget {
@@ -9,6 +11,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void navigateHome(AuthResponse response) {
+      context.read<AuthBloc>().add(CheckAuthStatus());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const HomePage()),

@@ -81,4 +81,23 @@ class MockSessionRemoteDataSourceImpl extends _i1.Mock
         returnValue:
             _i4.Future<List<_i7.SessionModel>>.value(<_i7.SessionModel>[]),
       ) as _i4.Future<List<_i7.SessionModel>>);
+
+  @override
+  _i4.Future<List<_i7.SessionModel>> loadWeeklySessions(
+    String? athleteId, {
+    DateTime? fromDate,
+    DateTime? toDate,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #loadWeeklySessions,
+          [athleteId],
+          {
+            #fromDate: fromDate,
+            #toDate: toDate,
+          },
+        ),
+        returnValue:
+            _i4.Future<List<_i7.SessionModel>>.value(<_i7.SessionModel>[]),
+      ) as _i4.Future<List<_i7.SessionModel>>);
 }
