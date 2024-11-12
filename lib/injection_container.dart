@@ -8,9 +8,13 @@ import 'package:tumblelog/features/auth/domain/usecases/get_current_session_usec
 import 'package:tumblelog/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:tumblelog/features/monitoring/data/datasources/athlete_remote_datasource.dart';
 import 'package:tumblelog/features/monitoring/data/datasources/skill_remote_datasource.dart';
+import 'package:tumblelog/features/monitoring/data/repositories/athlete_repository.dart';
 import 'package:tumblelog/features/monitoring/data/repositories/skill_repository.dart';
+import 'package:tumblelog/features/monitoring/domain/repositories/athlete_repository.dart';
 import 'package:tumblelog/features/monitoring/domain/repositories/skill_repository.dart';
+import 'package:tumblelog/features/monitoring/domain/usecases/load_athletes.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_skills.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
@@ -35,6 +39,9 @@ void setupLocator() async {
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(supabaseClient),
   );
+  getIt.registerLazySingleton<AthleteRemoteDataSource>(
+    () => AthleteRemoteDataSourceImpl(supabaseClient),
+  );
 
   // Register the repositories
   getIt.registerLazySingleton<SessionRepository>(
@@ -44,6 +51,10 @@ void setupLocator() async {
   getIt.registerLazySingleton<SkillRepository>(
     () => SkillRepositoryImpl(remoteDataSource: getIt<SkillRemoteDataSource>()),
   );
+  getIt.registerLazySingleton<AthleteRepository>(
+    () => AthleteRepositoryImpl(
+        remoteDataSource: getIt<AthleteRemoteDataSource>()),
+  );
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: getIt<AuthRemoteDataSource>()),
   );
@@ -51,6 +62,9 @@ void setupLocator() async {
   // Register the use cases
   getIt.registerFactory<SaveSessionUseCase>(
     () => SaveSessionUseCase(repository: getIt<SessionRepository>()),
+  );
+  getIt.registerFactory<LoadAthletesUseCase>(
+    () => LoadAthletesUseCase(repository: getIt<AthleteRepository>()),
   );
   getIt.registerFactory<LoadSessionsUseCase>(
     () => LoadSessionsUseCase(repository: getIt<SessionRepository>()),
@@ -88,6 +102,7 @@ void setupLocator() async {
   );
   getIt.registerFactory<MonitorBloc>(
     () => MonitorBloc(
+      loadAthletes: getIt<LoadAthletesUseCase>(),
       loadSessions: getIt<LoadSessionsUseCase>(),
       loadSkills: getIt<LoadSkillsUseCase>(),
     ),

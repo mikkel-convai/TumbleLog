@@ -7,6 +7,7 @@ import 'package:tumblelog/features/home/presentation/pages/admin_home_page.dart'
 import 'package:tumblelog/features/home/presentation/pages/athlete_home_page.dart';
 import 'package:tumblelog/features/home/presentation/pages/coach_home_page.dart';
 import 'package:tumblelog/features/home/presentation/pages/home_page.dart';
+import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 
 class AuthNavigator extends StatelessWidget {
   const AuthNavigator({super.key});
@@ -16,6 +17,7 @@ class AuthNavigator extends StatelessWidget {
     return BlocListener<AuthBloc, AppAuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
+          // TODO: Load monitor state
           FlutterNativeSplash.remove();
           final userRole = state.user.role; // Get the user's role
           if (userRole == 'athlete') {
@@ -24,6 +26,7 @@ class AuthNavigator extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const AthleteHomePage()),
             );
           } else if (userRole == 'coach') {
+            context.read<MonitorBloc>().add(const MonitorLoadAthletes());
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const CoachHomePage()),

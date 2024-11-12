@@ -11,6 +11,10 @@ final class MonitorLoadAllSessions extends MonitorEvent {
   const MonitorLoadAllSessions();
 }
 
+final class MonitorLoadAthletes extends MonitorEvent {
+  const MonitorLoadAthletes();
+}
+
 final class MonitorLoadSessionsForUser extends MonitorEvent {
   final String athleteId;
 

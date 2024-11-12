@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/widgets/auth_appbar.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
-import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
-import 'package:uuid/uuid.dart';
 
 class CoachHomePage extends StatefulWidget {
   const CoachHomePage({super.key});
@@ -17,14 +13,36 @@ class CoachHomePage extends StatefulWidget {
 }
 
 class _CoachHomePageState extends State<CoachHomePage> {
-  final List<Map<String, String>> athletes = [
-    {'id': 'athlete123', 'name': 'Grisha'},
-    {'id': 'athlete124', 'name': 'Bree'},
-    {'id': 'athlete125', 'name': 'Alexsa'},
-  ];
-
   String? selectedAthleteId;
   String? selectedAthleteName;
+
+  void _viewWeeklyMonitor(BuildContext context, String athleteId) {
+    context
+        .read<MonitorBloc>()
+        .add(MonitorLoadSessionsForUser(athleteId: athleteId));
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonitorWeekPage(
+          athleteId: athleteId,
+        ),
+      ),
+    );
+  }
+
+  void _viewMonitor(BuildContext context, String athleteId) {
+    context
+        .read<MonitorBloc>()
+        .add(MonitorLoadSessionsForUser(athleteId: athleteId));
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MonitorPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,84 +50,78 @@ class _CoachHomePageState extends State<CoachHomePage> {
       appBar: const AuthAppBar(
         title: 'Coach Home',
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton<String>(
-              value: selectedAthleteId,
-              hint: const Text('Select Athlete'),
-              items: athletes.map((athlete) {
-                return DropdownMenuItem<String>(
-                  value: athlete['id'],
-                  child: Text(athlete['name']!),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedAthleteId = value;
-                  selectedAthleteName = athletes
-                      .firstWhere((athlete) => athlete['id'] == value)['name'];
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: selectedAthleteId != null
-                  ? () {
-                      final session = SessionEntity(
-                        id: const Uuid().v4(),
-                        athleteId: selectedAthleteId!,
-                        athleteName: selectedAthleteName!,
-                        date: DateTime.now(),
+      body: BlocBuilder<MonitorBloc, MonitorState>(
+        builder: (context, state) {
+          if (state is MonitorLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is MonitorAthletesLoaded ||
+              state is MonitorStateLoaded) {
+            // Use the athletes from the current state
+            final athletes = state is MonitorAthletesLoaded
+                ? state.athletes
+                : (state as MonitorStateLoaded).athletes;
+
+            if (athletes.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No athletes available.',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              );
+            }
+
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton<String>(
+                    value: selectedAthleteId,
+                    hint: const Text('Select Athlete'),
+                    items: athletes.map((athlete) {
+                      return DropdownMenuItem<String>(
+                        value: athlete.id,
+                        child: Text(athlete.name),
                       );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) => LayoutCubit(),
-                            child: SessionPage(session: session),
-                          ),
-                        ),
-                      );
-                    }
-                  : null, // Disable the button if no athlete is selected
-              child: const Text('Start Session'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: selectedAthleteId != null
-                  ? () {
-                      context
-                          .read<MonitorBloc>()
-                          .add(const MonitorLoadAllSessions());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MonitorWeekPage(
-                            athleteId: selectedAthleteId!,
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
-              child: const Text('Weekly view'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.read<MonitorBloc>().add(const MonitorLoadAllSessions());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MonitorPage(),
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedAthleteId = value;
+                        selectedAthleteName = athletes
+                            .firstWhere((athlete) => athlete.id == value)
+                            .name;
+                      });
+                    },
                   ),
-                );
-              },
-              child: const Text('View Monitor'),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: selectedAthleteId != null
+                        ? () => _viewWeeklyMonitor(context, selectedAthleteId!)
+                        : null,
+                    child: const Text('Weekly view'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: selectedAthleteId != null
+                        ? () => _viewMonitor(context, selectedAthleteId!)
+                        : null,
+                    child: const Text('View Monitor'),
+                  ),
+                ],
+              ),
+            );
+          } else if (state is MonitorError) {
+            return Center(
+              child: Text('Error: ${state.message}'),
+            );
+          }
+
+          return const Center(
+            child: Text(
+              'Loading athletes...',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
