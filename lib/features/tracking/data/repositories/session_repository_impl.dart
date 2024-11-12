@@ -44,11 +44,11 @@ class SessionRepositoryImpl implements SessionRepository {
   }
 
   @override
-  Future<List<SessionEntity>> loadSessions() async {
+  Future<List<SessionEntity>> loadSessions({String? athleteId}) async {
     try {
       // Call remote data source
       final List<SessionModel> sessionModels =
-          await remoteDataSource.loadSessions();
+          await remoteDataSource.loadSessions(athleteId: athleteId);
 
       // Transform model to entity
       final List<SessionEntity> sessions = sessionModels.map((session) {

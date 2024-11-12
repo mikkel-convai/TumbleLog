@@ -17,6 +17,15 @@ class MonitorPage extends StatelessWidget {
           if (state is MonitorLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MonitorStateLoaded) {
+            if (state.sessions.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No sessions available.',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              );
+            }
+
             return ListView.builder(
               itemCount: state.sessions.length,
               itemBuilder: (context, index) {

@@ -16,49 +16,71 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
     required this.loadSessions,
     required this.loadSkills,
   }) : super(MonitorInitial()) {
-    on<MonitorLoadSessions>((event, emit) async {
+    on<MonitorLoadAllSessions>(_onLoadAllSessions);
+    on<MonitorLoadSessionsForUser>(_onLoadSessionsForUser);
+    on<MonitorLoadSkills>(_onLoadSkills);
+  }
+
+  Future<void> _onLoadAllSessions(
+      MonitorLoadAllSessions event, Emitter<MonitorState> emit) async {
+    emit(MonitorLoading());
+
+    try {
+      final List<SessionEntity> sessions = await loadSessions.execute();
+
+      emit(MonitorStateLoaded(
+        sessions: sessions,
+        selectedSession: null,
+        skills: const [],
+      ));
+    } catch (e) {
+      emit(MonitorError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onLoadSessionsForUser(
+      MonitorLoadSessionsForUser event, Emitter<MonitorState> emit) async {
+    emit(MonitorLoading());
+
+    try {
+      // Fetch sessions for the specific user
+      final List<SessionEntity> sessions =
+          await loadSessions.execute(athleteId: event.athleteId);
+
+      emit(MonitorStateLoaded(
+        sessions: sessions,
+        selectedSession: null,
+        skills: const [],
+      ));
+    } catch (e) {
+      emit(MonitorError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onLoadSkills(
+      MonitorLoadSkills event, Emitter<MonitorState> emit) async {
+    final currentState = state;
+    if (currentState is MonitorStateLoaded) {
       emit(MonitorLoading());
 
       try {
-        final List<SessionEntity> sessions = await loadSessions.execute();
+        // Fetch skills for the selected session
+        final List<SkillEntity> skills =
+            await loadSkills.execute(event.sessionId);
+
+        // Update the state with loaded skills and set the selected session
+        final selectedSession = currentState.sessions
+            .firstWhere((session) => session.id == event.sessionId);
 
         emit(MonitorStateLoaded(
-          sessions: sessions,
-          selectedSession: null,
-          skills: const [],
+          sessions: currentState.sessions,
+          selectedSession: selectedSession,
+          skills: skills,
         ));
       } catch (e) {
         emit(MonitorError(message: e.toString()));
       }
-    });
-
-    on<MonitorLoadSkills>(
-      (event, emit) async {
-        final currentState = state;
-        if (currentState is MonitorStateLoaded) {
-          emit(MonitorLoading());
-
-          try {
-            // Fetch skills for the selected session
-            final List<SkillEntity> skills =
-                await loadSkills.execute(event.sessionId);
-
-            // Update the state with loaded skills and set the selected session
-            final selectedSession = currentState.sessions
-                .firstWhere((session) => session.id == event.sessionId);
-
-            emit(MonitorStateLoaded(
-              sessions: currentState.sessions,
-              selectedSession: selectedSession,
-              skills: skills,
-            ));
-          } catch (e) {
-            // TODO: Handle errors
-            print('Error occured in Load skills bloc: $e');
-          }
-        }
-      },
-    );
+    }
   }
 
   List<SessionEntity> getWeeklySessionsForAthlete(String athleteId) {

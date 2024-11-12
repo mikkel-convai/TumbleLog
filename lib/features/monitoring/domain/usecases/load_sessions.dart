@@ -6,7 +6,7 @@ class LoadSessionsUseCase {
 
   LoadSessionsUseCase({required this.repository});
 
-  Future<List<SessionEntity>> execute() async {
-    return await repository.loadSessions();
+  Future<List<SessionEntity>> execute({String? athleteId}) async {
+    return await repository.loadSessions(athleteId: athleteId);
   }
 }

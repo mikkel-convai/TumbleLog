@@ -9,14 +9,14 @@ import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layo
 import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
 import 'package:uuid/uuid.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class CoachHomePage extends StatefulWidget {
+  const CoachHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CoachHomePage> createState() => _CoachHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CoachHomePageState extends State<CoachHomePage> {
   final List<Map<String, String>> athletes = [
     {'id': 'athlete123', 'name': 'Grisha'},
     {'id': 'athlete124', 'name': 'Bree'},
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AuthAppBar(
-        title: 'Home',
+        title: 'Coach Home',
       ),
       body: Center(
         child: Column(

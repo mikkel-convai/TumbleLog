@@ -8,5 +8,5 @@ abstract class SessionRepository {
   Future<Either<Failure, Success>> saveSession(
       SessionEntity session, List<SkillEntity> skills);
 
-  Future<List<SessionEntity>> loadSessions();
+  Future<List<SessionEntity>> loadSessions({String? athleteId});
 }

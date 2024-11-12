@@ -9,7 +9,7 @@ abstract class SessionRemoteDataSource {
   Future<Either<Failure, Success>> saveSession(
       SessionModel session, List<SkillModel> skills);
 
-  Future<List<SessionModel>> loadSessions();
+  Future<List<SessionModel>> loadSessions({String? athleteId});
 
   Future<List<SessionModel>> loadWeeklySessions(String athleteId,
       {DateTime? fromDate, DateTime? toDate});
@@ -52,12 +52,17 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
   }
 
   @override
-  Future<List<SessionModel>> loadSessions() async {
+  Future<List<SessionModel>> loadSessions({String? athleteId}) async {
     try {
-      // Call supabase
-      final List<dynamic> sessionRes =
-          await _supabaseClient.from('sessions').select();
-      // print('Supabase data fetched from remote data source: \n $sessionRes');
+      List<dynamic> sessionRes = [];
+      if (athleteId != null) {
+        sessionRes = await _supabaseClient
+            .from('sessions')
+            .select()
+            .eq('athlete_id', athleteId);
+      } else {
+        sessionRes = await _supabaseClient.from('sessions').select();
+      }
 
       // Transform JSON -> Model
       final sessions =

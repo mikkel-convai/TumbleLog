@@ -7,8 +7,17 @@ sealed class MonitorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class MonitorLoadSessions extends MonitorEvent {
-  const MonitorLoadSessions();
+final class MonitorLoadAllSessions extends MonitorEvent {
+  const MonitorLoadAllSessions();
+}
+
+final class MonitorLoadSessionsForUser extends MonitorEvent {
+  final String athleteId;
+
+  const MonitorLoadSessionsForUser({required this.athleteId});
+
+  @override
+  List<Object> get props => [athleteId];
 }
 
 final class MonitorLoadSkills extends MonitorEvent {

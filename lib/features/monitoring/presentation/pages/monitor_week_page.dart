@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,11 +31,17 @@ class MonitorWeekPage extends StatelessWidget {
 
             if (weeklySessions.isEmpty) {
               return const Center(
-                  child: Text('No sessions available for this week.'));
+                  child: Text(
+                'No sessions available for this week.',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ));
             }
 
             // Might need to be maxDD * 1.1 for dynamic scale
-            const maxY = 250.0;
+            final maxDd = weeklySessions
+                .map((session) => session.totalDd)
+                .reduce(max); // Find the maximum DD
+            final maxY = maxDd * 1.1;
 
             // Accumulate equipment dd across all sessions for the week
             final Map<EquipmentType, double> accumulatedEquipmentDd = {};

@@ -43,8 +43,6 @@ class AuthBloc extends Bloc<AuthEvent, AppAuthState> {
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
-
-    print(state);
   }
 
   Future<void> _onLogOut(LogOut event, Emitter<AppAuthState> emit) async {
