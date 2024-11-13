@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:tumblelog/features/auth/presentation/blocs/pages/auth_page.dart';
+import 'package:tumblelog/features/auth/presentation/pages/auth_page.dart';
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

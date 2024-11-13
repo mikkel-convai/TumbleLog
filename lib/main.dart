@@ -4,7 +4,7 @@ import 'package:tumblelog/features/auth/domain/usecases/get_current_session_usec
 import 'package:tumblelog/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:tumblelog/features/auth/presentation/blocs/pages/auth_navigator.dart';
+import 'package:tumblelog/features/auth/presentation/pages/auth_navigator.dart';
 import 'package:tumblelog/features/home/presentation/blocs/admin_bloc/admin_bloc.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_athletes.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';

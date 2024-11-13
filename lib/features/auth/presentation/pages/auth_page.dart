@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
-import 'package:tumblelog/features/auth/presentation/blocs/pages/auth_navigator.dart';
+import 'package:tumblelog/features/auth/presentation/pages/auth_navigator.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -31,6 +31,12 @@ class AuthPage extends StatelessWidget {
                 redirectTo: kIsWeb ? null : 'SETUP AUTH CALLBACK FOR APP',
                 onSignInComplete: navigateHome,
                 onSignUpComplete: navigateHome,
+                metadataFields: [
+                  BooleanMetaDataField(
+                    label: 'Coach',
+                    key: 'coach',
+                  ),
+                ],
               ),
             ),
           ],
