@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/features/auth/domain/usecases/get_current_session_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/log_out_usecase.dart';
+import 'package:tumblelog/features/auth/domain/usecases/update_user_usecase.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/auth/presentation/pages/auth_navigator.dart';
 import 'package:tumblelog/features/home/presentation/blocs/admin_bloc/admin_bloc.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
             getCurrentSession: getIt<GetCurrentSessionUseCase>(),
             getCurrentUser: getIt<GetCurrentUserUseCase>(),
             logOut: getIt<LogOutUseCase>(),
+            updateUser: getIt<UpdateUserUseCase>(),
           )..add(CheckAuthStatus()),
         ),
         BlocProvider(create: (_) => getIt<AdminBloc>())

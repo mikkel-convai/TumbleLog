@@ -4,6 +4,8 @@ import 'package:tumblelog/core/models/app_user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<Session?> getCurrentSession();
   Future<AppUserModel?> getCurrentUser(String id);
+  Future<AppUserModel?> updateUser(
+      String userId, Map<String, dynamic> updatedFields);
   Future<void> logOut();
 }
 
@@ -39,6 +41,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       print(e);
     }
 
+    return null;
+  }
+
+  @override
+  Future<AppUserModel?> updateUser(
+      String userId, Map<String, dynamic> updatedFields) async {
+    try {
+      final userJson = await supabaseClient
+          .from('users')
+          .update(updatedFields)
+          .eq('id', userId)
+          .select();
+
+      if (userJson.isNotEmpty) {
+        final AppUserModel user = AppUserModel.fromJson(userJson.first);
+        return user;
+      }
+
+      print('AuthRemoteDataSource: User update returned nothing');
+      return null;
+    } catch (e) {
+      print(e);
+    }
     return null;
   }
 }

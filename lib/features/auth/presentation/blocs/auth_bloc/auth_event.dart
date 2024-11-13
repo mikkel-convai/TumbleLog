@@ -9,6 +9,19 @@ sealed class AuthEvent extends Equatable {
 
 final class CheckAuthStatus extends AuthEvent {}
 
+final class AuthUpdateUserDetails extends AuthEvent {
+  final String userId;
+  final Map<String, dynamic> updatedFields;
+
+  const AuthUpdateUserDetails({
+    required this.userId,
+    required this.updatedFields,
+  });
+
+  @override
+  List<Object> get props => [userId, updatedFields];
+}
+
 final class LogIn extends AuthEvent {
   final String email;
   final String password;

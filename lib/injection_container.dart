@@ -7,6 +7,7 @@ import 'package:tumblelog/features/auth/domain/repositories/auth_repository.dart
 import 'package:tumblelog/features/auth/domain/usecases/get_current_session_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:tumblelog/features/auth/domain/usecases/log_out_usecase.dart';
+import 'package:tumblelog/features/auth/domain/usecases/update_user_usecase.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/home/data/datasources/admin_remote_datasource.dart';
 import 'package:tumblelog/features/home/data/repositories/admin_repository.dart';
@@ -129,6 +130,9 @@ void _initUseCases() {
   getIt.registerFactory<UpdateUserClubUseCase>(
     () => UpdateUserClubUseCase(getIt<AdminRepository>()),
   );
+  getIt.registerFactory<UpdateUserUseCase>(
+    () => UpdateUserUseCase(getIt<AuthRepository>()),
+  );
 }
 
 void _initBlocs() {
@@ -138,6 +142,7 @@ void _initBlocs() {
       getCurrentSession: getIt<GetCurrentSessionUseCase>(),
       getCurrentUser: getIt<GetCurrentUserUseCase>(),
       logOut: getIt<LogOutUseCase>(),
+      updateUser: getIt<UpdateUserUseCase>(),
     ),
   );
   getIt.registerFactory<SkillBloc>(

@@ -33,4 +33,23 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     return null;
   }
+
+  @override
+  Future<AppUser?> updateUser(
+      String userid, Map<String, dynamic> updatedFields) async {
+    final AppUserModel? userModel =
+        await remoteDataSource.updateUser(userid, updatedFields);
+
+    if (userModel != null) {
+      final AppUser user = AppUser(
+        id: userModel.id,
+        name: userModel.name,
+        email: userModel.email,
+        role: userModel.role,
+        clubId: userModel.clubId,
+      );
+      return user;
+    }
+    return null;
+  }
 }
