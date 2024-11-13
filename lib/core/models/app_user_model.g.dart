@@ -11,6 +11,7 @@ AppUserModel _$AppUserModelFromJson(Map<String, dynamic> json) => AppUserModel(
       name: json['name'] as String,
       email: json['email'] as String,
       role: json['role'] as String,
+      clubId: json['club_id'] as String?,
     );
 
 Map<String, dynamic> _$AppUserModelToJson(AppUserModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$AppUserModelToJson(AppUserModel instance) =>
       'name': instance.name,
       'role': instance.role,
       'email': instance.email,
+      'club_id': instance.clubId,
     };

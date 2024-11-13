@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tumblelog/core/entities/session_entity.dart';
-import 'package:tumblelog/core/widgets/auth_appbar.dart';
-import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
-import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
-import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
-import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
-import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
-import 'package:uuid/uuid.dart';
+import 'package:tumblelog/features/home/presentation/blocs/admin_bloc/admin_bloc.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -17,100 +10,266 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  final List<Map<String, String>> athletes = [
-    {'id': 'athlete123', 'name': 'Grisha'},
-    {'id': 'athlete124', 'name': 'Bree'},
-    {'id': 'athlete125', 'name': 'Alexsa'},
-  ];
-
-  String? selectedAthleteId;
-  String? selectedAthleteName;
+  final TextEditingController _clubNameController = TextEditingController();
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AuthAppBar(
-        title: 'Admin Home',
+      appBar: AppBar(title: const Text('Admin Home')),
+      body: BlocBuilder<AdminBloc, AdminState>(
+        builder: (context, state) {
+          return _selectedIndex == 0
+              ? _buildClubsView(state)
+              : _buildUsersView(state);
+        },
       ),
-      body: Center(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: 'Clubs',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Users',
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _addClub(BuildContext context, String clubName) {
+    if (clubName.isNotEmpty) {
+      context.read<AdminBloc>().add(AddClubEvent(clubName));
+      _clubNameController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Club name cannot be empty')),
+      );
+    }
+  }
+
+  void _deleteClub(BuildContext context, String clubId) {
+    context.read<AdminBloc>().add(DeleteClubEvent(clubId));
+  }
+
+  void _updateUserRole(BuildContext context, String userId, String newRole) {
+    context.read<AdminBloc>().add(UpdateUserRoleEvent(userId, newRole));
+  }
+
+  void _updateUserClub(BuildContext context, String userId, String newClubId) {
+    context.read<AdminBloc>().add(UpdateUserClubEvent(userId, newClubId));
+  }
+
+  Widget _buildClubsView(AdminState state) {
+    if (state is AdminLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state is AdminStateLoaded) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButton<String>(
-              value: selectedAthleteId,
-              hint: const Text('Select Athlete'),
-              items: athletes.map((athlete) {
-                return DropdownMenuItem<String>(
-                  value: athlete['id'],
-                  child: Text(athlete['name']!),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedAthleteId = value;
-                  selectedAthleteName = athletes
-                      .firstWhere((athlete) => athlete['id'] == value)['name'];
-                });
-              },
+            const Text(
+              'Add a New Club',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _clubNameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Club Name',
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton.icon(
+              onPressed: () =>
+                  _addClub(context, _clubNameController.text.trim()),
+              icon: const Icon(Icons.add),
+              label: const Text('Add Club'),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: selectedAthleteId != null
-                  ? () {
-                      final session = SessionEntity(
-                        id: const Uuid().v4(),
-                        athleteId: selectedAthleteId!,
-                        athleteName: selectedAthleteName!,
-                        date: DateTime.now(),
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) => LayoutCubit(),
-                            child: SessionPage(session: session),
+            const Text(
+              'Existing Clubs',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: state.clubs.isEmpty
+                  ? const Center(child: Text('No clubs available.'))
+                  : ListView.builder(
+                      itemCount: state.clubs.length,
+                      itemBuilder: (context, index) {
+                        final club = state.clubs[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            title: Text(club.name),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => _deleteClub(context, club.id),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null, // Disable the button if no athlete is selected
-              child: const Text('Start Session'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: selectedAthleteId != null
-                  ? () {
-                      context
-                          .read<MonitorBloc>()
-                          .add(const MonitorLoadAllSessions());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MonitorWeekPage(
-                            athleteId: selectedAthleteId!,
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
-              child: const Text('Weekly view'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.read<MonitorBloc>().add(const MonitorLoadAllSessions());
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MonitorPage(),
-                  ),
-                );
-              },
-              child: const Text('View Monitor'),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
-      ),
-    );
+      );
+    }
+
+    if (state is AdminError) {
+      return Center(child: Text('Error: ${state.message}'));
+    }
+
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildUsersView(AdminState state) {
+    if (state is AdminLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (state is AdminStateLoaded) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'User List',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: state.users.isEmpty
+                  ? const Center(child: Text('No users available.'))
+                  : ListView.builder(
+                      itemCount: state.users.length,
+                      itemBuilder: (context, index) {
+                        final user = state.users[index];
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.person, size: 32),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        user.email,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            'Role: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          DropdownButton<String>(
+                                            value: user.role,
+                                            items: const [
+                                              DropdownMenuItem(
+                                                value: 'coach',
+                                                child: Text('Coach'),
+                                              ),
+                                              DropdownMenuItem(
+                                                value: 'athlete',
+                                                child: Text('Athlete'),
+                                              ),
+                                            ],
+                                            onChanged: (newRole) {
+                                              if (newRole != null) {
+                                                _updateUserRole(
+                                                    context, user.id, newRole);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            'Club: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          DropdownButton<String>(
+                                            value: user.clubId,
+                                            hint: const Text('Select Club'),
+                                            items: state.clubs
+                                                .map<DropdownMenuItem<String>>(
+                                                    (club) {
+                                              return DropdownMenuItem<String>(
+                                                value: club.id,
+                                                child: Text(club.name),
+                                              );
+                                            }).toList(),
+                                            onChanged: (newClubId) {
+                                              if (newClubId != null) {
+                                                _updateUserClub(context,
+                                                    user.id, newClubId);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (state is AdminError) {
+      return Center(child: Text('Error: ${state.message}'));
+    }
+
+    return const SizedBox.shrink();
+  }
+
+  @override
+  void dispose() {
+    _clubNameController.dispose();
+    super.dispose();
   }
 }

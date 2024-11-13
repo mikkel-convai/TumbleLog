@@ -55,10 +55,12 @@ class MockLoadSessionsUseCase extends _i1.Mock
       ) as _i2.SessionRepository);
 
   @override
-  _i4.Future<List<_i5.SessionEntity>> execute() => (super.noSuchMethod(
+  _i4.Future<List<_i5.SessionEntity>> execute({String? athleteId}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #execute,
           [],
+          {#athleteId: athleteId},
         ),
         returnValue:
             _i4.Future<List<_i5.SessionEntity>>.value(<_i5.SessionEntity>[]),

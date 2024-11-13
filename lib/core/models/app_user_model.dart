@@ -9,12 +9,14 @@ class AppUserModel extends Equatable {
   final String name;
   final String role;
   final String email;
+  final String? clubId;
 
   const AppUserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.role,
+    this.clubId,
   });
 
   /// Factory constructor for creating a new `AppUserModel` instance from a map.
@@ -25,5 +27,5 @@ class AppUserModel extends Equatable {
   Map<String, dynamic> toJson() => _$AppUserModelToJson(this);
 
   @override
-  List<Object?> get props => [id, name, role, email];
+  List<Object?> get props => [id, name, role, email, clubId];
 }

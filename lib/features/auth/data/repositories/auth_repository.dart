@@ -27,6 +27,7 @@ class AuthRepositoryImpl implements AuthRepository {
         name: userModel.name,
         email: userModel.email,
         role: userModel.role,
+        clubId: userModel.clubId,
       );
       return user;
     }

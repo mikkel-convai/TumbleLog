@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/auth/presentation/blocs/pages/auth_page.dart';
+import 'package:tumblelog/features/home/presentation/blocs/admin_bloc/admin_bloc.dart';
 import 'package:tumblelog/features/home/presentation/pages/admin_home_page.dart';
 import 'package:tumblelog/features/home/presentation/pages/athlete_home_page.dart';
 import 'package:tumblelog/features/home/presentation/pages/coach_home_page.dart';
@@ -32,6 +33,7 @@ class AuthNavigator extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const CoachHomePage()),
             );
           } else if (userRole == 'admin') {
+            context.read<AdminBloc>().add(FetchClubsAndUsersEvent());
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const AdminHomePage()),
