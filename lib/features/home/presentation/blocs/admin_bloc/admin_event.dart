@@ -45,7 +45,7 @@ class UpdateUserRoleEvent extends AdminEvent {
 
 class UpdateUserClubEvent extends AdminEvent {
   final String userId;
-  final String newClubId;
+  final String? newClubId;
 
   const UpdateUserClubEvent(this.userId, this.newClubId);
 

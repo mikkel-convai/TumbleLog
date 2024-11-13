@@ -31,7 +31,7 @@ class MonitorBloc extends Bloc<MonitorEvent, MonitorState> {
     emit(MonitorLoading());
 
     try {
-      final List<AppUser> athletes = await loadAthletes.execute();
+      final List<AppUser> athletes = await loadAthletes.execute(event.userClub);
 
       emit(MonitorAthletesLoaded(
         athletes: athletes,

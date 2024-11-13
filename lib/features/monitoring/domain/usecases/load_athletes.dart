@@ -6,7 +6,7 @@ class LoadAthletesUseCase {
 
   LoadAthletesUseCase({required this.repository});
 
-  Future<List<AppUser>> execute() async {
-    return await repository.loadAthletes();
+  Future<List<AppUser>> execute(String? userClub) async {
+    return await repository.loadAthletes(userClub);
   }
 }

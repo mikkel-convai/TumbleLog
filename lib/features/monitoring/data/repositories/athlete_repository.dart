@@ -9,8 +9,9 @@ class AthleteRepositoryImpl implements AthleteRepository {
   const AthleteRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<List<AppUser>> loadAthletes() async {
-    final List<AppUserModel> userModels = await remoteDataSource.loadAthletes();
+  Future<List<AppUser>> loadAthletes(String? userClub) async {
+    final List<AppUserModel> userModels =
+        await remoteDataSource.loadAthletes(userClub);
     final List<AppUser> users = userModels
         .map((model) => AppUser(
               id: model.id,

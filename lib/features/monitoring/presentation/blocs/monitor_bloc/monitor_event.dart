@@ -12,7 +12,9 @@ final class MonitorLoadAllSessions extends MonitorEvent {
 }
 
 final class MonitorLoadAthletes extends MonitorEvent {
-  const MonitorLoadAthletes();
+  final String? userClub;
+
+  const MonitorLoadAthletes(this.userClub);
 }
 
 final class MonitorLoadSessionsForUser extends MonitorEvent {

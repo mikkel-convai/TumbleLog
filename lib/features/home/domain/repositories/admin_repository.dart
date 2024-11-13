@@ -7,5 +7,5 @@ abstract class AdminRepository {
   Future<void> deleteClub(String clubId);
   Future<List<AppUser>> fetchUsers();
   Future<void> updateUserRole(String userId, String newRole);
-  Future<void> updateUserClub(String userId, String newClubId);
+  Future<void> updateUserClub(String userId, String? newClubId);
 }

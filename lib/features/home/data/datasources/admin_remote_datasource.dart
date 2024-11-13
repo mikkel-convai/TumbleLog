@@ -8,7 +8,7 @@ abstract class AdminRemoteDataSource {
   Future<ClubModel> addClub(String clubName);
   Future<void> deleteClub(String clubId);
   Future<AppUserModel> updateUserRole(String userId, String newRole);
-  Future<AppUserModel> updateUserClub(String userId, String newClubId);
+  Future<AppUserModel> updateUserClub(String userId, String? newClubId);
 }
 
 class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
@@ -99,7 +99,7 @@ class AdminRemoteDataSourceImpl implements AdminRemoteDataSource {
   }
 
   @override
-  Future<AppUserModel> updateUserClub(String userId, String newClubId) async {
+  Future<AppUserModel> updateUserClub(String userId, String? newClubId) async {
     try {
       final userJson = await supabaseClient
           .from('users')

@@ -61,7 +61,7 @@ class AdminRepositoryImpl implements AdminRepository {
   }
 
   @override
-  Future<AppUser> updateUserClub(String userId, String newClubId) async {
+  Future<AppUser> updateUserClub(String userId, String? newClubId) async {
     final model = await remoteDataSource.updateUserClub(userId, newClubId);
     return AppUser(
       id: model.id,

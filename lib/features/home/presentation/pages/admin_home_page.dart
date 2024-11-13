@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/core/widgets/auth_appbar.dart';
 import 'package:tumblelog/features/home/presentation/blocs/admin_bloc/admin_bloc.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -16,7 +17,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Admin Home')),
+      appBar: const AuthAppBar(
+        title: 'Admin home',
+      ),
       body: BlocBuilder<AdminBloc, AdminState>(
         builder: (context, state) {
           return _selectedIndex == 0
@@ -64,7 +67,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     context.read<AdminBloc>().add(UpdateUserRoleEvent(userId, newRole));
   }
 
-  void _updateUserClub(BuildContext context, String userId, String newClubId) {
+  void _updateUserClub(BuildContext context, String userId, String? newClubId) {
     context.read<AdminBloc>().add(UpdateUserClubEvent(userId, newClubId));
   }
 
@@ -225,22 +228,28 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          DropdownButton<String>(
+                                          DropdownButton<String?>(
                                             value: user.clubId,
                                             hint: const Text('Select Club'),
-                                            items: state.clubs
-                                                .map<DropdownMenuItem<String>>(
-                                                    (club) {
-                                              return DropdownMenuItem<String>(
-                                                value: club.id,
-                                                child: Text(club.name),
-                                              );
-                                            }).toList(),
+                                            items: [
+                                              const DropdownMenuItem<String?>(
+                                                value: null,
+                                                child: Text('No Club'),
+                                              ),
+                                              ...state.clubs.map<
+                                                  DropdownMenuItem<String?>>(
+                                                (club) {
+                                                  return DropdownMenuItem<
+                                                      String?>(
+                                                    value: club.id,
+                                                    child: Text(club.name),
+                                                  );
+                                                },
+                                              ),
+                                            ],
                                             onChanged: (newClubId) {
-                                              if (newClubId != null) {
-                                                _updateUserClub(context,
-                                                    user.id, newClubId);
-                                              }
+                                              _updateUserClub(
+                                                  context, user.id, newClubId);
                                             },
                                           ),
                                         ],

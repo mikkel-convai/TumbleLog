@@ -9,9 +9,9 @@ class AppUser extends Equatable {
 
   const AppUser({
     required this.id,
-    required this.name,
     required this.email,
     required this.role,
+    this.name = '',
     this.clubId,
   });
 

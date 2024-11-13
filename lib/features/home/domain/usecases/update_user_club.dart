@@ -5,7 +5,7 @@ class UpdateUserClubUseCase {
 
   UpdateUserClubUseCase(this.repository);
 
-  Future<void> execute(String userId, String newClubId) async {
+  Future<void> execute(String userId, String? newClubId) async {
     return repository.updateUserClub(userId, newClubId);
   }
 }

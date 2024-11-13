@@ -18,16 +18,16 @@ class AuthNavigator extends StatelessWidget {
     return BlocListener<AuthBloc, AppAuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
-          // TODO: Load monitor state
           FlutterNativeSplash.remove();
-          final userRole = state.user.role; // Get the user's role
+          final userRole = state.user.role;
+          final userClub = state.user.clubId;
           if (userRole == 'athlete') {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const AthleteHomePage()),
             );
           } else if (userRole == 'coach') {
-            context.read<MonitorBloc>().add(const MonitorLoadAthletes());
+            context.read<MonitorBloc>().add(MonitorLoadAthletes(userClub));
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const CoachHomePage()),
