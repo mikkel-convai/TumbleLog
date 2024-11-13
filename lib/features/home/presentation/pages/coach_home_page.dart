@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/core/widgets/auth_appbar.dart';
+import 'package:tumblelog/features/home/presentation/pages/club_management_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
@@ -56,16 +57,33 @@ class _CoachHomePageState extends State<CoachHomePage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is MonitorAthletesLoaded ||
               state is MonitorStateLoaded) {
-            // Use the athletes from the current state
             final athletes = state is MonitorAthletesLoaded
                 ? state.athletes
                 : (state as MonitorStateLoaded).athletes;
 
             if (athletes.isEmpty) {
-              return const Center(
-                child: Text(
-                  'No athletes available.',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'No athletes available.',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ClubManagementPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Club Management'),
+                    ),
+                  ],
                 ),
               );
             }
@@ -105,6 +123,18 @@ class _CoachHomePageState extends State<CoachHomePage> {
                         ? () => _viewMonitor(context, selectedAthleteId!)
                         : null,
                     child: const Text('View Monitor'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ClubManagementPage(),
+                        ),
+                      );
+                    },
+                    child: const Text('Club Management'),
                   ),
                 ],
               ),
