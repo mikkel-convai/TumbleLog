@@ -8,7 +8,7 @@ List<SessionModel> parseSessionModelsFromString(String jsonString) {
     return SessionModel(
       id: json['id'],
       athleteId: json['athlete_id'],
-      athleteName: json['athlete_name'],
+      // athleteName: json['athlete_name'],
       date: DateTime.parse(json['date']),
     );
   }).toList();
@@ -21,7 +21,7 @@ List<SessionEntity> parseSessionEntitiesFromString(String jsonString) {
     return SessionEntity(
         id: session.id,
         athleteId: session.athleteId,
-        athleteName: session.athleteName,
+        // athleteName: session.athleteName,
         date: session.date);
   }).toList();
 }

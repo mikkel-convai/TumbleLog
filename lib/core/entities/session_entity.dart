@@ -14,7 +14,7 @@ class SessionEntity extends Equatable {
     required this.athleteId,
     required this.date,
     this.totalDd = 0,
-    this.athleteName = 'Grisha',
+    this.athleteName = 'NoName',
     this.equipmentDd = defaultEquipmentDd,
   });
 

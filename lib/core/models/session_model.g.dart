@@ -11,7 +11,7 @@ SessionModel _$SessionModelFromJson(Map<String, dynamic> json) => SessionModel(
       athleteId: json['athlete_id'] as String,
       date: DateTime.parse(json['date'] as String),
       totalDd: (json['total_dd'] as num?)?.toDouble() ?? 0,
-      athleteName: json['athlete_name'] as String? ?? 'Grisha',
+      athleteName: json['athlete_name'] as String? ?? 'NoName',
       equipmentDd: (json['equipment_dd'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
                 $enumDecode(_$EquipmentTypeEnumMap, k), (e as num).toDouble()),

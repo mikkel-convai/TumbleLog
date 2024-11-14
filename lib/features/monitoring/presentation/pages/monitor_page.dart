@@ -34,12 +34,10 @@ class MonitorPage extends StatelessWidget {
                   margin: const EdgeInsets.all(10.0),
                   elevation: 3.0,
                   child: ListTile(
-                    // title: Text('Session ID: ${session.id}'),
                     title: Text('Athlete: ${session.athleteName}'),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text('Athlete: ${session.athleteName}'),
                         Text('Date: ${session.date}'),
                       ],
                     ),

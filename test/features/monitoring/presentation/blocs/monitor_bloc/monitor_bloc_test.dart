@@ -6,6 +6,7 @@ import 'package:tumblelog/core/entities/skill_entity.dart';
 import 'package:tumblelog/core/utils/json_to_session_model.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 
+import '../../../domain/usecases/load_athletes.mocks.dart';
 import '../../../domain/usecases/load_session.mocks.dart';
 import '../../../domain/usecases/load_skills.mocks.dart';
 
@@ -13,13 +14,16 @@ void main() {
   late MonitorBloc monitorBloc;
   late MockLoadSessionsUseCase mockLoadSessionsUseCase;
   late MockLoadSkillsUseCase mockLoadSkillsUseCase;
+  late MockLoadAthletesUseCase mockLoadAthletesUseCase;
 
   setUp(() {
     mockLoadSessionsUseCase = MockLoadSessionsUseCase();
     mockLoadSkillsUseCase = MockLoadSkillsUseCase();
+    mockLoadAthletesUseCase = MockLoadAthletesUseCase();
     monitorBloc = MonitorBloc(
       loadSessions: mockLoadSessionsUseCase,
       loadSkills: mockLoadSkillsUseCase,
+      loadAthletes: mockLoadAthletesUseCase,
     );
   });
 
@@ -52,10 +56,13 @@ void main() {
             .thenAnswer((_) async => mockSessionEntities);
         return monitorBloc;
       },
-      act: (bloc) => bloc.add(const MonitorLoadSessions()),
+      act: (bloc) => bloc.add(const MonitorLoadAllSessions()),
       expect: () => [
         MonitorLoading(),
-        MonitorStateLoaded(sessions: mockSessionEntities, skills: const []),
+        MonitorStateLoaded(
+            sessions: mockSessionEntities,
+            skills: const [],
+            athletes: const []),
       ],
       verify: (_) {
         verify(mockLoadSessionsUseCase.execute()).called(1);
@@ -70,7 +77,7 @@ void main() {
             .thenThrow(Exception('Failed to load sessions'));
         return monitorBloc;
       },
-      act: (bloc) => bloc.add(const MonitorLoadSessions()),
+      act: (bloc) => bloc.add(const MonitorLoadAllSessions()),
       expect: () => [
         MonitorLoading(),
         const MonitorError(message: 'Exception: Failed to load sessions'),
@@ -97,6 +104,7 @@ void main() {
           sessions: mockSessionEntities,
           selectedSession: null,
           skills: const [],
+          athletes: const [],
         );
       },
       act: (bloc) =>
@@ -108,6 +116,7 @@ void main() {
           selectedSession: mockSessionEntities
               .firstWhere((session) => session.id == mockSessionId),
           skills: mockSkills,
+          athletes: const [],
         ),
       ],
       verify: (_) {
