@@ -8,29 +8,6 @@ class NamingView extends StatelessWidget {
 
   NamingView({super.key, required this.athleteId});
 
-  // Future<void> _updateUserName(
-  // BuildContext context, String newName, String userId) async {
-  // if (newName.isEmpty) return;
-
-  // try {
-  // final updatedUser = await supabaseClient
-  // .from('users')
-  // .update({'name': newName})
-  // .eq('id', userId)
-  // .select();
-
-  // if (updatedUser.isNotEmpty) {
-  // ScaffoldMessenger.of(context).showSnackBar(
-  // const SnackBar(content: Text('Name updated successfully')),
-  // );
-  // }
-  // } catch (e) {
-  // ScaffoldMessenger.of(context).showSnackBar(
-  // const SnackBar(content: Text('Failed to update name')),
-  // );
-  // }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -70,7 +47,6 @@ class NamingView extends StatelessWidget {
               const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
-                  // TODO: Consider success/error message
                   context.read<AuthBloc>().add(
                         AuthUpdateUserDetails(
                           userId: athleteId,

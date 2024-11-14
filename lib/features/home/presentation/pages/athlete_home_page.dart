@@ -64,53 +64,77 @@ class AthleteHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.watch<AuthBloc>().state;
+    return BlocListener<AuthBloc, AppAuthState>(
+      listener: (context, state) {
+        if (state is AuthAuthenticated) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Name updated successfully')),
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.message}')),
+          );
+        }
+      },
+      child: Builder(
+        builder: (context) {
+          final authState = context.watch<AuthBloc>().state;
 
-    if (authState is AuthAuthenticated) {
-      final currentUser = authState.user;
-      final athleteId = currentUser.id;
-      final athleteName = currentUser.name;
+          if (authState is AuthAuthenticated) {
+            final currentUser = authState.user;
+            final athleteId = currentUser.id;
+            final athleteName = currentUser.name;
 
-      return Scaffold(
-        appBar: const AuthAppBar(
-          title: 'Athlete Home',
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              athleteName == "NoName"
-                  ? NamingView(athleteId: athleteId)
-                  : const SizedBox.shrink(),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _startSession(context, athleteId, athleteName),
-                child: const Text('Start Session'),
+            return Scaffold(
+              appBar: const AuthAppBar(
+                title: 'Athlete Home',
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _viewWeeklyMonitor(context, athleteId),
-                child: const Text('Weekly view'),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    athleteName == "NoName"
+                        ? NamingView(athleteId: athleteId)
+                        : Text(
+                            'Welcome back, $athleteName!',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () =>
+                          _startSession(context, athleteId, athleteName),
+                      child: const Text('Start Session'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => _viewWeeklyMonitor(context, athleteId),
+                      child: const Text('Weekly view'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => _viewMonitor(context, athleteId),
+                      child: const Text('All Sessions'),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => _viewMonitor(context, athleteId),
-                child: const Text('All Sessions'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+            );
+          }
 
-    return const Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            CircularProgressIndicator(),
-            Text('Loading authentication')
-          ],
-        ),
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(),
+                  Text('Loading authentication')
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
