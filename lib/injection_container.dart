@@ -29,6 +29,12 @@ import 'package:tumblelog/features/monitoring/domain/usecases/load_athletes.dart
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_skills.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
+import 'package:tumblelog/features/programming/data/datasources/program_remote_datasource.dart';
+import 'package:tumblelog/features/programming/data/repositories/program_repository.dart';
+import 'package:tumblelog/features/programming/domain/repositories/program_repository.dart';
+import 'package:tumblelog/features/programming/domain/usecases/fetch_skill_library_usecase.dart';
+import 'package:tumblelog/features/programming/domain/usecases/save_program_usecase.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/program_bloc/program_bloc.dart';
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart';
@@ -63,6 +69,9 @@ void _initDataSources() {
   getIt.registerLazySingleton<AdminRemoteDataSource>(
     () => AdminRemoteDataSourceImpl(supabaseClient),
   );
+  getIt.registerLazySingleton<ProgramRemoteDataSource>(
+    () => ProgramRemoteDataSourceImpl(supabaseClient),
+  );
 }
 
 void _initRepos() {
@@ -83,6 +92,10 @@ void _initRepos() {
   );
   getIt.registerLazySingleton<AdminRepository>(
     () => AdminRepositoryImpl(remoteDataSource: getIt<AdminRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<ProgramRepository>(
+    () => ProgramRepositoryImpl(
+        remoteDataSource: getIt<ProgramRemoteDataSource>()),
   );
 }
 
@@ -133,6 +146,14 @@ void _initUseCases() {
   getIt.registerFactory<UpdateUserUseCase>(
     () => UpdateUserUseCase(getIt<AuthRepository>()),
   );
+  getIt.registerFactory<FetchSkillLibraryUseCase>(
+    () => FetchSkillLibraryUseCase(),
+  );
+  getIt.registerFactory<SaveProgramUseCase>(
+    () => SaveProgramUseCase(
+      repository: getIt<ProgramRepository>(),
+    ),
+  );
 }
 
 void _initBlocs() {
@@ -167,6 +188,12 @@ void _initBlocs() {
       fetchUsersUseCase: getIt<FetchUsersUseCase>(),
       updateUserRoleUseCase: getIt<UpdateUserRoleUseCase>(),
       updateUserClubUseCase: getIt<UpdateUserClubUseCase>(),
+    ),
+  );
+  getIt.registerFactory<ProgramBloc>(
+    () => ProgramBloc(
+      fetchSkillLibrary: getIt<FetchSkillLibraryUseCase>(),
+      saveNewProgram: getIt<SaveProgramUseCase>(),
     ),
   );
 }

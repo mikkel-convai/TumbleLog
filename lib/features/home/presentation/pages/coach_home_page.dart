@@ -7,6 +7,8 @@ import 'package:tumblelog/features/home/presentation/widgets/naming_view.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
+import 'package:tumblelog/features/programming/presentation/pages/assign_program_page.dart';
+import 'package:tumblelog/features/programming/presentation/pages/create_program_page.dart';
 
 class CoachHomePage extends StatefulWidget {
   const CoachHomePage({super.key});
@@ -111,6 +113,32 @@ class _CoachHomePageState extends State<CoachHomePage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
+                                        const AssignProgramPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Assign Programs'),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CreateProgramPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Programming'),
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
                                         const ClubManagementPage(),
                                   ),
                                 );
@@ -170,6 +198,32 @@ class _CoachHomePageState extends State<CoachHomePage> {
                                     _viewMonitor(context, selectedAthleteId!)
                                 : null,
                             child: const Text('View Monitor'),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AssignProgramPage(),
+                                ),
+                              );
+                            },
+                            child: const Text('Assign Programs'),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CreateProgramPage(),
+                                ),
+                              );
+                            },
+                            child: const Text('Programming'),
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(

@@ -11,6 +11,7 @@ import 'package:tumblelog/features/monitoring/domain/usecases/load_athletes.dart
 import 'package:tumblelog/features/monitoring/domain/usecases/load_sessions.dart';
 import 'package:tumblelog/features/monitoring/domain/usecases/load_skills.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/program_bloc/program_bloc.dart';
 import 'package:tumblelog/injection_container.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -54,7 +55,8 @@ class MyApp extends StatelessWidget {
             updateUser: getIt<UpdateUserUseCase>(),
           )..add(CheckAuthStatus()),
         ),
-        BlocProvider(create: (_) => getIt<AdminBloc>())
+        BlocProvider(create: (_) => getIt<ProgramBloc>()),
+        BlocProvider(create: (_) => getIt<AdminBloc>()),
       ],
       child: const MaterialApp(
           debugShowCheckedModeBanner: false,
