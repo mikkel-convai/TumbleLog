@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/program_entity.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
 import 'package:tumblelog/core/entities/skill_library_entity.dart';
@@ -45,17 +46,6 @@ class _AthleteHomePageState extends State<AthleteHomePage> {
   }
 
   void _startSession(BuildContext context) {
-    if (selectedProgramSkills == null || selectedProgramSkills!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Please select a program with skills before starting a session'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
     final session = SessionEntity(
       id: const Uuid().v4(),
       athleteId: athleteId,
@@ -158,7 +148,10 @@ class _AthleteHomePageState extends State<AthleteHomePage> {
                           return Text(state.message,
                               style: const TextStyle(color: Colors.red));
                         } else if (state is ViewProgramLoaded) {
-                          final programs = state.programs;
+                          final programs = [
+                            defaultProgram,
+                            ...state.programs,
+                          ];
 
                           return DropdownButton<String>(
                             value: selectedProgramId,
