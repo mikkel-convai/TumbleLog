@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/constants.dart';
 import 'package:tumblelog/core/entities/session_entity.dart';
+import 'package:tumblelog/core/entities/skill_entity.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/calculate_dd_usecase.dart';
 import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
@@ -13,7 +14,8 @@ import 'package:tumblelog/injection_container.dart';
 
 class SessionPage extends StatelessWidget {
   final SessionEntity session;
-  const SessionPage({super.key, required this.session});
+  final List<SkillEntity>? skills;
+  const SessionPage({super.key, required this.session, this.skills});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SessionPage extends StatelessWidget {
         session: session,
         saveSessionUseCase: getIt<SaveSessionUseCase>(),
         calcDdUseCase: getIt<CalculateDdUseCase>(),
-      )..add(LoadSkills()),
+      )..add(LoadSkills(skills: skills)),
       child: Scaffold(
         appBar: const SessionAppBar(),
         body: SafeArea(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tumblelog/core/entities/program_entity.dart';
 import 'package:tumblelog/core/entities/skill_library_entity.dart';
-import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/programming/presentation/blocs/view_program_bloc/view_program_bloc.dart';
 
 class ProgramView extends StatefulWidget {
@@ -14,21 +13,6 @@ class ProgramView extends StatefulWidget {
 
 class _ProgramViewState extends State<ProgramView> {
   String? selectedProgramId;
-
-  @override
-  void initState() {
-    super.initState();
-    // Load programs when the page initializes
-    _initPrograms();
-  }
-
-  void _initPrograms() {
-    final userState = context.read<AuthBloc>().state;
-    if (userState is AuthAuthenticated) {
-      final String userId = userState.user.id;
-      context.read<ViewProgramBloc>().add(LoadPrograms(userId: userId));
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +58,7 @@ class _ProgramViewState extends State<ProgramView> {
                             programs
                                 .firstWhere(
                                   (program) => program.id == selectedProgramId!,
-                                  orElse: () => ProgramEntity(
+                                  orElse: () => const ProgramEntity(
                                     id: '',
                                     name: '',
                                     skills: [],

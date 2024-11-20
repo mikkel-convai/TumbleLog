@@ -10,6 +10,8 @@ import 'package:tumblelog/features/tracking/domain/usecases/save_session_usecase
 part 'skill_event.dart';
 part 'skill_state.dart';
 
+// TODO: Extract functions from on statements for cleaner code
+
 class SkillBloc extends Bloc<SkillEvent, SkillState> {
   final SessionEntity session;
   final SaveSessionUseCase saveSessionUseCase;
