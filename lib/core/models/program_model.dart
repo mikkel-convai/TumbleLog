@@ -4,11 +4,15 @@ import 'package:tumblelog/core/models/skill_library_model.dart';
 
 part 'program_model.g.dart';
 
+// TODO: Write tests for this
+
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.snake)
 class ProgramModel extends Equatable {
   final String id;
   final String name;
   final String? creatorId;
+
+  @JsonKey(name: 'program_skills', fromJson: _extractSkillsFromProgramSkills)
   final List<SkillLibraryModel> skills;
 
   const ProgramModel({
@@ -24,6 +28,15 @@ class ProgramModel extends Equatable {
 
   /// Method to convert `ProgramModel` to JSON
   Map<String, dynamic> toJson() => _$ProgramModelToJson(this);
+
+  /// Helper method to convert `program_skills` into a list of `SkillLibraryModel`
+  static List<SkillLibraryModel> _extractSkillsFromProgramSkills(
+      List<dynamic>? programSkills) {
+    if (programSkills == null) return [];
+    return programSkills
+        .map((e) => SkillLibraryModel.fromJson(e['skill_library']))
+        .toList();
+  }
 
   /// Convert `ProgramModel` to a map for database saving
   Map<String, dynamic> toProgramsTableMap() {

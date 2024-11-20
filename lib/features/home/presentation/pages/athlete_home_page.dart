@@ -7,6 +7,7 @@ import 'package:tumblelog/features/home/presentation/widgets/naming_view.dart';
 import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/monitor_bloc.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
+import 'package:tumblelog/features/programming/presentation/pages/program_view_page.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
 import 'package:uuid/uuid.dart';
@@ -107,6 +108,16 @@ class AthleteHomePage extends StatelessWidget {
                       onPressed: () =>
                           _startSession(context, athleteId, athleteName),
                       child: const Text('Start Session'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProgramView(),
+                        ),
+                      ),
+                      child: const Text('See programs'),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(

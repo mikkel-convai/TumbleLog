@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tumblelog/injection_container.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/assign_program_bloc/assign_program_bloc.dart';
 
-// TODO: State -> CA BLoC
+// TODO: Provide feedback on assigning user
+// TODO: Make existing assignments visible
 
 class AssignProgramPage extends StatefulWidget {
   const AssignProgramPage({super.key});
@@ -11,79 +14,29 @@ class AssignProgramPage extends StatefulWidget {
 }
 
 class _AssignProgramPageState extends State<AssignProgramPage> {
-  List<dynamic> athletes = [];
-  List<dynamic> programs = [];
   Map<String, String?> selectedPrograms = {};
 
   @override
   void initState() {
     super.initState();
-    _fetchAthletes();
-    _fetchPrograms();
+    _initAssignData();
   }
 
-  Future<void> _fetchPrograms() async {
-    try {
-      final programRes =
-          await supabaseClient.from('programs').select('id, name');
-
-      if (programRes.isEmpty) {
-        print('No programs found');
-        setState(() {
-          programs = [];
-        });
-      } else {
-        setState(() {
-          programs = programRes;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error fetching programs: $e')),
-        );
-      }
+  void _initAssignData() {
+    final userState = context.read<AuthBloc>().state;
+    if (userState is AuthAuthenticated) {
+      final String? clubId = userState.user.clubId;
+      context.read<AssignProgramBloc>().add(LoadAssignProgramData(clubId));
     }
   }
 
-  Future<void> _fetchAthletes() async {
-    try {
-      final response = await supabaseClient
-          .from('users')
-          .select('id, email')
-          .eq('role', 'athlete');
-
-      setState(() {
-        athletes = response;
-        // Initialize selected programs for each athlete
-        for (var athlete in response) {
-          selectedPrograms[athlete['id']] = null;
-        }
-      });
-    } catch (error) {
-      debugPrint('Error fetching athletes: $error');
-    }
-  }
-
-  void _assignProgram(String athleteId, String? programId) {
+  void _assignProgram(
+      BuildContext context, String athleteId, String? programId) {
     if (programId != null) {
-      supabaseClient.from('athlete_programs').upsert(
-        {
-          'athlete_id': athleteId,
-          'program_id': programId,
-        },
-        onConflict: 'athlete_id, program_id',
-      ).then((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Program assigned successfully!')),
-        );
-      }).catchError((error) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error assigning program: $error')),
-          );
-        }
-      });
+      context.read<AssignProgramBloc>().add(AssignProgramToAthlete(
+            athleteId: athleteId,
+            programId: programId,
+          ));
     }
   }
 
@@ -91,14 +44,20 @@ class _AssignProgramPageState extends State<AssignProgramPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Assign Programs to Athletes')),
-      body: athletes.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
+      body: BlocBuilder<AssignProgramBloc, AssignProgramState>(
+        builder: (context, state) {
+          if (state is AssignProgramLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is AssignProgramLoaded) {
+            final athletes = state.athletes;
+            final programs = state.programs;
+
+            return ListView.builder(
               itemCount: athletes.length,
               itemBuilder: (context, index) {
                 final athlete = athletes[index];
-                final athleteId = athlete['id'];
-                final athleteName = athlete['email'] ?? 'No Email';
+                final athleteId = athlete.id;
+                final athleteName = athlete.email;
 
                 return Card(
                   margin: const EdgeInsets.all(8),
@@ -116,21 +75,32 @@ class _AssignProgramPageState extends State<AssignProgramPage> {
                       hint: const Text('Assign Program'),
                       items: programs.map<DropdownMenuItem<String>>((program) {
                         return DropdownMenuItem<String>(
-                          value: program['id'] as String,
-                          child: Text(program['name'] ?? 'No Name'),
+                          value: program.id,
+                          child: Text(program.name),
                         );
                       }).toList(),
                       onChanged: (String? newProgramId) {
                         setState(() {
                           selectedPrograms[athleteId] = newProgramId;
                         });
-                        _assignProgram(athleteId, newProgramId);
+                        _assignProgram(context, athleteId, newProgramId);
                       },
                     ),
                   ),
                 );
               },
-            ),
+            );
+          } else if (state is AssignProgramError) {
+            return Center(
+              child: Text(
+                'Error: ${state.message}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+          return const Center(child: Text('Something went wrong.'));
+        },
+      ),
     );
   }
 }

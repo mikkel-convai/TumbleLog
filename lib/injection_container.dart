@@ -32,9 +32,14 @@ import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/mo
 import 'package:tumblelog/features/programming/data/datasources/program_remote_datasource.dart';
 import 'package:tumblelog/features/programming/data/repositories/program_repository.dart';
 import 'package:tumblelog/features/programming/domain/repositories/program_repository.dart';
+import 'package:tumblelog/features/programming/domain/usecases/assign_program_to_athlete_usecase.dart';
+import 'package:tumblelog/features/programming/domain/usecases/fetch_all_programs_usecase.dart';
 import 'package:tumblelog/features/programming/domain/usecases/fetch_skill_library_usecase.dart';
+import 'package:tumblelog/features/programming/domain/usecases/fetch_user_programs_usecase.dart';
 import 'package:tumblelog/features/programming/domain/usecases/save_program_usecase.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/assign_program_bloc/assign_program_bloc.dart';
 import 'package:tumblelog/features/programming/presentation/blocs/program_bloc/program_bloc.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/view_program_bloc/view_program_bloc.dart';
 import 'package:tumblelog/features/tracking/data/datasources/session_remote_datasource.dart';
 import 'package:tumblelog/features/tracking/data/repositories/session_repository_impl.dart';
 import 'package:tumblelog/features/tracking/domain/repositories/session_repository.dart';
@@ -150,9 +155,16 @@ void _initUseCases() {
     () => FetchSkillLibraryUseCase(),
   );
   getIt.registerFactory<SaveProgramUseCase>(
-    () => SaveProgramUseCase(
-      repository: getIt<ProgramRepository>(),
-    ),
+    () => SaveProgramUseCase(repository: getIt<ProgramRepository>()),
+  );
+  getIt.registerFactory<FetchAllProgramsUseCase>(
+    () => FetchAllProgramsUseCase(repository: getIt<ProgramRepository>()),
+  );
+  getIt.registerFactory<AssignProgramToAthleteUseCase>(
+    () => AssignProgramToAthleteUseCase(repository: getIt<ProgramRepository>()),
+  );
+  getIt.registerFactory<FetchUserProgramsUseCase>(
+    () => FetchUserProgramsUseCase(repository: getIt<ProgramRepository>()),
   );
 }
 
@@ -194,6 +206,18 @@ void _initBlocs() {
     () => ProgramBloc(
       fetchSkillLibrary: getIt<FetchSkillLibraryUseCase>(),
       saveNewProgram: getIt<SaveProgramUseCase>(),
+    ),
+  );
+  getIt.registerFactory<AssignProgramBloc>(
+    () => AssignProgramBloc(
+      fetchAllProgramsUseCase: getIt<FetchAllProgramsUseCase>(),
+      fetchAthletesUseCase: getIt<LoadAthletesUseCase>(),
+      assignProgramToAthleteUseCase: getIt<AssignProgramToAthleteUseCase>(),
+    ),
+  );
+  getIt.registerFactory<ViewProgramBloc>(
+    () => ViewProgramBloc(
+      fetchProgramsUseCase: getIt<FetchUserProgramsUseCase>(),
     ),
   );
 }

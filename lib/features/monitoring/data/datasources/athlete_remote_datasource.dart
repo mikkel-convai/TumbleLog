@@ -32,7 +32,7 @@ class AthleteRemoteDataSourceImpl implements AthleteRemoteDataSource {
       return athletes;
     } catch (e) {
       print(e.toString());
+      throw Exception('Failed to load athletes');
     }
-    return [];
   }
 }

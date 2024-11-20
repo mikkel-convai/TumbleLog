@@ -10,9 +10,8 @@ ProgramModel _$ProgramModelFromJson(Map<String, dynamic> json) => ProgramModel(
       id: json['id'] as String,
       name: json['name'] as String,
       creatorId: json['creator_id'] as String?,
-      skills: (json['skills'] as List<dynamic>)
-          .map((e) => SkillLibraryModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      skills: ProgramModel._extractSkillsFromProgramSkills(
+          json['program_skills'] as List?),
     );
 
 Map<String, dynamic> _$ProgramModelToJson(ProgramModel instance) =>
@@ -20,5 +19,5 @@ Map<String, dynamic> _$ProgramModelToJson(ProgramModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'creator_id': instance.creatorId,
-      'skills': instance.skills.map((e) => e.toJson()).toList(),
+      'program_skills': instance.skills.map((e) => e.toJson()).toList(),
     };
