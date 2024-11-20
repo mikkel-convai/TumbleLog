@@ -47,6 +47,7 @@ class SessionRemoteDataSourceImpl implements SessionRemoteDataSource {
 
       return Right(Success(message: 'Session uploaded.'));
     } catch (e) {
+      print(e);
       return Left(Failure(message: 'Error saving session and skills: $e'));
     }
   }

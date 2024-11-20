@@ -130,7 +130,7 @@ class _CoachHomePageState extends State<CoachHomePage> {
                                   ),
                                 );
                               },
-                              child: const Text('Programming'),
+                              child: const Text('Create Programs'),
                             ),
                             const SizedBox(height: 20),
                             ElevatedButton(
@@ -223,7 +223,7 @@ class _CoachHomePageState extends State<CoachHomePage> {
                                 ),
                               );
                             },
-                            child: const Text('Programming'),
+                            child: const Text('Create Programs'),
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(

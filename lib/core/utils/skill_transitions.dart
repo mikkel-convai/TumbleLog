@@ -9,7 +9,6 @@ List<SkillEntity> convertToSkillEntities(
 ) {
   return skillLibraryEntities.map((skillLibrary) {
     return SkillEntity(
-      id: skillLibrary.id,
       sessionId: sessionId,
       name: skillLibrary.name,
       symbol: skillLibrary.symbol,
