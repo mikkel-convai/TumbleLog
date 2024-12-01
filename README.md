@@ -65,6 +65,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Contact
 For any questions or suggestions, please contact [your-email@example.com].
-```
-
-Replace `your-username`, `your-supabase-url`, `your-supabase-key`, and `your-email@example.com` with your actual information, and you're good to go!
