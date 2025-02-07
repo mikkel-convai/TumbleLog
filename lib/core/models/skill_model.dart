@@ -30,6 +30,6 @@ class SkillModel extends Equatable {
   Map<String, dynamic> toJson() => _$SkillModelToJson(this);
 
   @override
-  List<Object?> get props =>
+  List<Object> get props =>
       [id, sessionId, name, symbol, difficulty, equipmentReps];
 }

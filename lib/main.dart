@@ -62,10 +62,25 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => getIt<AssignProgramBloc>()),
         BlocProvider(create: (_) => getIt<AdminBloc>()),
       ],
-      child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'TubmleLog',
-          home: AuthNavigator()),
+      child: MaterialApp(
+        theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.green,
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.green,
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.green,
+            ),
+          ),
+        ),
+        debugShowCheckedModeBanner: false,
+        title: 'TubmleLog',
+        home: const AuthNavigator(),
+      ),
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tumblelog/core/entities/app_user_entity.dart';
 import 'package:tumblelog/core/models/athlete_program_model.dart';
 import 'package:tumblelog/core/models/program_model.dart';
 
 abstract class ProgramRemoteDataSource {
-  Future<void> saveProgram(ProgramModel program);
+  Future<void> saveProgram(ProgramModel program, AppUser? currentUser);
   Future<List<ProgramModel>> fetchAllPrograms();
   Future<List<ProgramModel>> fetchUserPrograms(String userId);
   Future<void> assignProgramToAthlete(AthleteProgramModel assignment);
@@ -15,7 +16,7 @@ class ProgramRemoteDataSourceImpl implements ProgramRemoteDataSource {
   ProgramRemoteDataSourceImpl(this.supabaseClient);
 
   @override
-  Future<void> saveProgram(ProgramModel program) async {
+  Future<void> saveProgram(ProgramModel program, AppUser? currentUser) async {
     // Using custom json functions as there are mappings to multiple tables
     // Convert the `ProgramModel` to a database map
     final programData = program.toProgramsTableMap();
@@ -35,6 +36,15 @@ class ProgramRemoteDataSourceImpl implements ProgramRemoteDataSource {
 
       // Save the linked skills
       await supabaseClient.from('program_skills').insert(programSkills);
+
+      if (currentUser != null && currentUser.role == 'athlete') {
+        final AthleteProgramModel athleteProgram = AthleteProgramModel(
+          athleteId: currentUser.id,
+          programId: programId,
+        );
+
+        assignProgramToAthlete(athleteProgram);
+      }
     } else {
       throw Exception('Failed to save the program');
     }

@@ -1,3 +1,4 @@
+import 'package:tumblelog/core/entities/app_user_entity.dart';
 import 'package:tumblelog/core/entities/athlete_program_entity.dart';
 import 'package:tumblelog/core/entities/program_entity.dart';
 import 'package:tumblelog/core/entities/skill_library_entity.dart';
@@ -13,7 +14,7 @@ class ProgramRepositoryImpl implements ProgramRepository {
   ProgramRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<void> saveProgram(ProgramEntity program) async {
+  Future<void> saveProgram(ProgramEntity program, AppUser? currentUser) async {
     final skills = program.skills
         .map(
           (skill) => SkillLibraryModel(
@@ -33,7 +34,7 @@ class ProgramRepositoryImpl implements ProgramRepository {
       skills: skills,
     );
 
-    await remoteDataSource.saveProgram(model);
+    await remoteDataSource.saveProgram(model, currentUser);
   }
 
   @override

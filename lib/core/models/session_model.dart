@@ -30,12 +30,6 @@ class SessionModel extends Equatable {
   Map<String, dynamic> toJson() => _$SessionModelToJson(this);
 
   @override
-  List<Object?> get props => [
-        id,
-        athleteId,
-        athleteName,
-        totalDd,
-        date,
-        equipmentDd,
-      ];
+  List<Object> get props =>
+      [id, athleteId, athleteName, totalDd, date, equipmentDd];
 }

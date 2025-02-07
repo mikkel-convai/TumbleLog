@@ -12,6 +12,7 @@ import 'package:tumblelog/features/monitoring/presentation/blocs/monitor_bloc/mo
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_page.dart';
 import 'package:tumblelog/features/monitoring/presentation/pages/monitor_week_page.dart';
 import 'package:tumblelog/features/programming/presentation/blocs/view_program_bloc/view_program_bloc.dart';
+import 'package:tumblelog/features/programming/presentation/pages/create_program_page.dart';
 import 'package:tumblelog/features/programming/presentation/pages/program_view_page.dart';
 import 'package:tumblelog/features/tracking/presentation/blocs/layout_cubit/layout_cubit.dart';
 import 'package:tumblelog/features/tracking/presentation/pages/session_page.dart';
@@ -150,7 +151,8 @@ class _AthleteHomePageState extends State<AthleteHomePage> {
                         } else if (state is ViewProgramLoaded) {
                           final programs = [
                             defaultProgram,
-                            ...state.programs,
+                            ...state.programs.where(
+                                (program) => program.id != defaultProgram.id),
                           ];
 
                           return DropdownButton<String>(
@@ -192,6 +194,16 @@ class _AthleteHomePageState extends State<AthleteHomePage> {
                           ? null
                           : () => _startSession(context),
                       child: const Text('Start Session'),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CreateProgramPage(),
+                        ),
+                      ),
+                      child: const Text('Create program'),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(

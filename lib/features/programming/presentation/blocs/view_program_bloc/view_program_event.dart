@@ -13,3 +13,12 @@ class LoadPrograms extends ViewProgramEvent {
   @override
   List<Object> get props => [userId];
 }
+
+class UpdatePrograms extends ViewProgramEvent {
+  final ProgramEntity program;
+
+  UpdatePrograms({required this.program});
+
+  @override
+  List<Object> get props => [program];
+}

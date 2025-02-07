@@ -12,6 +12,7 @@ class ViewProgramBloc extends Bloc<ViewProgramEvent, ViewProgramState> {
   ViewProgramBloc({required this.fetchProgramsUseCase})
       : super(ViewProgramInitial()) {
     on<LoadPrograms>(_onLoadPrograms);
+    on<UpdatePrograms>(_onUpdatePrograms);
   }
 
   Future<void> _onLoadPrograms(
@@ -20,6 +21,25 @@ class ViewProgramBloc extends Bloc<ViewProgramEvent, ViewProgramState> {
     try {
       final programs = await fetchProgramsUseCase.execute(event.userId);
       emit(ViewProgramLoaded(programs: programs));
+    } catch (e) {
+      emit(ViewProgramError(
+          message: 'Failed to load programs: ${e.toString()}'));
+    }
+  }
+
+  Future<void> _onUpdatePrograms(
+      UpdatePrograms event, Emitter<ViewProgramState> emit) async {
+    final prevState = state;
+    emit(ViewProgramLoading());
+
+    try {
+      if (prevState is ViewProgramLoaded) {
+        // Add the new program to the list
+        final updatedPrograms = List<ProgramEntity>.from(prevState.programs)
+          ..add(event.program);
+
+        emit(ViewProgramLoaded(programs: updatedPrograms));
+      }
     } catch (e) {
       emit(ViewProgramError(
           message: 'Failed to load programs: ${e.toString()}'));

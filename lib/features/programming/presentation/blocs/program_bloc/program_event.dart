@@ -31,7 +31,12 @@ class ProgramSkillRemoved extends ProgramEvent {
   List<Object> get props => [skill];
 }
 
-class SaveNewProgram extends ProgramEvent {}
+class SaveNewProgram extends ProgramEvent {
+  final AppUser? currentUser;
+  final BuildContext context;
+
+  const SaveNewProgram({this.currentUser, required this.context});
+}
 
 class ProgramNameChanged extends ProgramEvent {
   final String programName;

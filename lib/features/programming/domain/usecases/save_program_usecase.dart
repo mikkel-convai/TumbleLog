@@ -1,3 +1,4 @@
+import 'package:tumblelog/core/entities/app_user_entity.dart';
 import 'package:tumblelog/core/entities/program_entity.dart';
 import 'package:tumblelog/features/programming/domain/repositories/program_repository.dart';
 
@@ -6,7 +7,7 @@ class SaveProgramUseCase {
 
   const SaveProgramUseCase({required this.repository});
 
-  Future<void> execute(ProgramEntity program) async {
-    await repository.saveProgram(program);
+  Future<void> execute(ProgramEntity program, AppUser? currentUser) async {
+    await repository.saveProgram(program, currentUser);
   }
 }

@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/core/entities/app_user_entity.dart';
 import 'package:tumblelog/core/entities/program_entity.dart';
 import 'package:tumblelog/core/entities/skill_library_entity.dart';
 import 'package:tumblelog/features/programming/domain/usecases/fetch_skill_library_usecase.dart';
 import 'package:tumblelog/features/programming/domain/usecases/save_program_usecase.dart';
+import 'package:tumblelog/features/programming/presentation/blocs/view_program_bloc/view_program_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 part 'program_event.dart';
@@ -40,14 +44,21 @@ class ProgramBloc extends Bloc<ProgramEvent, ProgramState> {
   void _onSaveNewProgram(
       SaveNewProgram event, Emitter<ProgramState> emit) async {
     final prevState = state;
+    final AppUser? currentUser = event.currentUser;
 
     if (prevState is ProgramCreateStateLoaded) {
       emit(ProgramSaving());
 
       try {
-        await saveNewProgram.execute(prevState.program);
+        await saveNewProgram.execute(prevState.program, currentUser);
         emit(ProgramSaved());
+
+        if (currentUser != null && event.context.mounted) {
+          final viewProgramBloc = event.context.read<ViewProgramBloc>();
+          viewProgramBloc.add(UpdatePrograms(program: prevState.program));
+        }
       } catch (e) {
+        print(e);
         emit(ProgramError(
           "Failed to save the program. Please try again.",
         ));

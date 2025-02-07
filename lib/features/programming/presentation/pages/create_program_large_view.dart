@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tumblelog/core/entities/app_user_entity.dart';
 import 'package:tumblelog/core/entities/skill_library_entity.dart';
-import 'package:tumblelog/features/home/presentation/pages/coach_home_page.dart';
+import 'package:tumblelog/features/auth/presentation/blocs/auth_bloc/auth_bloc.dart';
 import 'package:tumblelog/features/programming/presentation/widgets/program_name_input.dart';
 import 'package:tumblelog/features/programming/presentation/widgets/skill_list.dart';
 import 'package:tumblelog/features/programming/presentation/blocs/program_bloc/program_bloc.dart';
@@ -19,6 +20,8 @@ class CreateProgramViewLarge extends StatelessWidget {
 
   void _saveProgram(BuildContext context) {
     final state = context.read<ProgramBloc>().state;
+    final authState = context.read<AuthBloc>().state;
+    late final AppUser? currentUser;
 
     if (state is ProgramCreateStateLoaded) {
       // Validate programName and selectedSkills
@@ -42,8 +45,14 @@ class CreateProgramViewLarge extends StatelessWidget {
         return;
       }
 
+      if (authState is AuthAuthenticated) {
+        currentUser = authState.user;
+      }
+
       // Dispatch the save program event
-      context.read<ProgramBloc>().add(SaveNewProgram());
+      context
+          .read<ProgramBloc>()
+          .add(SaveNewProgram(currentUser: currentUser, context: context));
     }
   }
 
@@ -71,12 +80,12 @@ class CreateProgramViewLarge extends StatelessWidget {
                 backgroundColor: Colors.green,
               ),
             );
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CoachHomePage(),
-              ),
-            );
+            // Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const CoachHomePage(),
+            //   ),
+            // );
           }
         },
         child: BlocBuilder<ProgramBloc, ProgramState>(

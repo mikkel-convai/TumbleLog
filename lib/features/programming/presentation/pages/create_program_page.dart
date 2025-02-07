@@ -12,6 +12,7 @@ class CreateProgramPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     const desktopBreakpoint = 800;
+    late final String userId;
 
     // Access the AuthBloc to get the user's ID
     final authState = context.read<AuthBloc>().state;
@@ -22,7 +23,8 @@ class CreateProgramPage extends StatelessWidget {
     // Dispatch ProgramCreationInit only if the state is not already loaded
     if (bloc.state is! ProgramCreateStateLoaded) {
       if (authState is AuthAuthenticated) {
-        bloc.add(ProgramCreationInit(creatorId: authState.user.id));
+        userId = authState.user.id;
+        bloc.add(ProgramCreationInit(creatorId: userId));
       } else {
         // Handle unauthenticated case if necessary
         ScaffoldMessenger.of(context).showSnackBar(
